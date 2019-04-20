@@ -1,6 +1,6 @@
 import React from "react";
 
-import { createRootNavigator } from "./src/routes";
+import { createRootNavigator } from "./src/Routes";
 // import { isSignedIn, onSignOut } from "./src/service/auth";
 
 export default class App extends React.Component {
