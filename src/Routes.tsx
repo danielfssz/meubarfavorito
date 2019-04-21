@@ -13,6 +13,7 @@ import {
 import SignIn from "./screens/SignIn";
 import Main from "./screens/Main";
 import MatchDetail from "./screens/MatchDetail";
+import { Icon } from "react-native-elements";
 
 const { width } = Dimensions.get("window");
 
@@ -62,10 +63,20 @@ const customDrawerComponent = (props: any) => (
   </SafeAreaView>
 );
 
-const mainNavigation = createStackNavigator({
-  Main,
-  MatchDetail
-});
+const mainNavigation = createStackNavigator(
+  {
+    Main,
+    MatchDetail
+  },
+  {
+    navigationOptions: {
+      drawerLabel: "Início",
+      drawerIcon: ({ tintColor }: any) => (
+        <Icon name="home" type="font-awesome" color={tintColor} />
+      )
+    }
+  }
+);
 
 const AppDrawerNavigator = createDrawerNavigator(
   {

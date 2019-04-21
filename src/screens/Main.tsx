@@ -20,6 +20,7 @@ export default class Main extends Component {
 
   static navigationOptions = {
     header: null,
+    drawerLabel: "Início",
     title: "Home",
     drawerIcon: ({ tintColor }: any) => (
       <Icon name="home" type="font-awesome" color={tintColor} />
