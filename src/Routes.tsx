@@ -17,11 +17,21 @@ import { Icon } from "react-native-elements";
 
 const { width } = Dimensions.get("window");
 
-const SignedOutRoutes = createStackNavigator({
-  Login: {
-    screen: SignIn
+const SignedOutRoutes = createStackNavigator(
+  {
+    Login: {
+      screen: SignIn
+    }
+  },
+  {
+    navigationOptions: {
+      drawerLabel: "Login",
+      drawerIcon: ({ tintColor }: any) => (
+        <Icon name="sign-in" type="font-awesome" color={tintColor} />
+      )
+    }
   }
-});
+);
 
 const customDrawerComponent = (props: any) => (
   <SafeAreaView style={{ flex: 1 }}>
@@ -93,7 +103,8 @@ const mainNavigation = createStackNavigator(
 
 const AppDrawerNavigator = createDrawerNavigator(
   {
-    mainNavigation
+    mainNavigation,
+    SignIn
   },
   {
     contentComponent: customDrawerComponent,

@@ -14,16 +14,20 @@ export default class HeaderMenu extends Component {
         <Header
           backgroundColor="#38C08E"
           leftComponent={
-            <TouchableOpacity
-              onPress={() => this.props.navigation.openDrawer()}
-            >
-              <Icon
-                containerStyle={{ paddingRight: 16 }}
-                name="menu"
-                size={30}
-                color="white"
-              />
-            </TouchableOpacity>
+            <>
+              {this.props.menu && (
+                <TouchableOpacity
+                  onPress={() => this.props.navigation.openDrawer()}
+                >
+                  <Icon
+                    containerStyle={{ paddingRight: 16 }}
+                    name="menu"
+                    size={30}
+                    color="white"
+                  />
+                </TouchableOpacity>
+              )}
+            </>
           }
           centerComponent={{
             text: this.props.tituloTela,

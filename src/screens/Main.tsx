@@ -91,7 +91,7 @@ export default class Main extends Component {
     //   .get("/evento")
     //   .then(data => {
     //     console.log(data.data);
-    //     // this.setState({ eventos: data.data });
+    //     this.setState({ eventos: data.data });
     //   })
     //   .catch(error => {
     //     console.log(error);
@@ -102,7 +102,7 @@ export default class Main extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.divHeader}>
-          <HeaderMenu {...this.props} tituloTela="Meu Bar Favorito" />
+          <HeaderMenu {...this.props} menu tituloTela="Meu Bar Favorito" />
         </View>
         <View style={styles.divContent}>
           <FlatList
