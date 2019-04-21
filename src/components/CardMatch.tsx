@@ -1,8 +1,6 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 
-import Icon from "react-native-vector-icons/Octicons";
-
 const CardMatch = (props: any) => {
   return (
     <View style={styles.container}>
@@ -45,10 +43,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     height: 220,
-    margin: 13,
     borderWidth: 0.5,
     borderRadius: 20,
-    borderColor: "#dddddd"
+    borderColor: "#dddddd",
+    margin: 12,
+    marginTop: 6,
+    marginBottom: 6
   },
   divHeader: {
     flex: 4,

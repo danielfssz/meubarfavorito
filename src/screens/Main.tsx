@@ -1,21 +1,25 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, Image, FlatList } from "react-native";
-import HeaderMenu from "../components/HeaderMenu";
+import { View, StyleSheet, FlatList } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import { Icon } from "react-native-elements";
-import CardMatch from "../components/CardMatch";
-import api from "../services/apiService";
 import moment from "moment";
 import "moment/locale/pt-br";
 
+import CardMatch from "../components/CardMatch";
+import api from "../services/apiService";
+import HeaderMenu from "../components/HeaderMenu";
+import { DrawerItems } from "react-navigation";
+
 export default class Main extends Component {
   public props: any;
-  // private formatDate: Moment;
+
   constructor(props: any) {
     super(props);
     moment.locale("pt-BR");
   }
 
   static navigationOptions = {
+    header: null,
     title: "Home",
     drawerIcon: ({ tintColor }: any) => (
       <Icon name="home" type="font-awesome" color={tintColor} />
@@ -37,7 +41,8 @@ export default class Main extends Component {
       nomeEstabelecimento: "Bar do Zé",
       nomeMandante: "Palmeiras",
       nomeVisitante: "Corinthians",
-      campeonato: "Campeonato Brasileiro"
+      campeonato: "Campeonato Brasileiro",
+      views: 878
     },
     {
       data: "Sun, 30 Jun 2019 21:45:00 GMT",
@@ -49,7 +54,8 @@ export default class Main extends Component {
       nomeEstabelecimento: "Bar do Zé",
       nomeMandante: "Palmeiras",
       nomeVisitante: "Corinthians",
-      campeonato: "Campeonato Brasileiro"
+      campeonato: "Campeonato Brasileiro",
+      views: 878
     },
     {
       data: "Sun, 30 Jun 2019 21:45:00 GMT",
@@ -61,7 +67,8 @@ export default class Main extends Component {
       nomeEstabelecimento: "Bar do Zé",
       nomeMandante: "Palmeiras",
       nomeVisitante: "Corinthians",
-      campeonato: "Campeonato Brasileiro"
+      campeonato: "Campeonato Brasileiro",
+      views: 878
     },
     {
       data: "Sun, 30 Jun 2019 21:45:00 GMT",
@@ -73,33 +80,23 @@ export default class Main extends Component {
       nomeEstabelecimento: "Bar do Zé",
       nomeMandante: "Palmeiras",
       nomeVisitante: "Corinthians",
-      campeonato: "Campeonato Brasileiro"
+      campeonato: "Campeonato Brasileiro",
+      views: 878
     }
   ];
 
   componentDidMount() {
-    api
-      .get("/evento")
-      .then(data => {
-        console.log(data.data);
-        // this.setState({ eventos: data.data });
-        this.setState({ eventos: this.ex });
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    this.setState({ eventos: this.ex });
+    // api
+    //   .get("/evento")
+    //   .then(data => {
+    //     console.log(data.data);
+    //     // this.setState({ eventos: data.data });
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
   }
-
-  // {
-  //         "data": "Sun, 30 Jun 2019 21:45:00 GMT",
-  //         "enderecoEstabelecimento": "rua 12, 124",
-  //         "escudoMandante": "linkEscudoPalmeiras",
-  //         "escudoVisitante": "linkEscudoCorinthians",
-  //         "id": 3,
-  //         "nomeEstabelecimento": "Bar do Zé",
-  //         "nomeMandante": "Palmeiras",
-  //         "nomeVisitante": "Corinthians"
-  //     }
 
   render() {
     return (
@@ -112,14 +109,21 @@ export default class Main extends Component {
             keyExtractor={(item, index) => index.toString()}
             data={this.state.eventos}
             renderItem={({ item }: any) => (
-              <CardMatch
-                nomeMandante={item.nomeMandante}
-                nomeVisitante={item.nomeVisitante}
-                escudoMandante={item.escudoMandante}
-                escudoVisitante={item.escudoVisitante}
-                campeonato={item.campeonato}
-                horario={moment(item.data).format("LLLL")}
-              />
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate("MatchDetail", item);
+                }}
+              >
+                <CardMatch
+                  nomeMandante={item.nomeMandante}
+                  nomeVisitante={item.nomeVisitante}
+                  escudoMandante={item.escudoMandante}
+                  escudoVisitante={item.escudoVisitante}
+                  campeonato={item.campeonato}
+                  horario={moment(item.data).format("LLLL")}
+                  views={item.views}
+                />
+              </TouchableOpacity>
             )}
           />
         </View>

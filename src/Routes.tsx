@@ -12,6 +12,7 @@ import {
 
 import SignIn from "./screens/SignIn";
 import Main from "./screens/Main";
+import MatchDetail from "./screens/MatchDetail";
 
 const { width } = Dimensions.get("window");
 
@@ -61,9 +62,14 @@ const customDrawerComponent = (props: any) => (
   </SafeAreaView>
 );
 
+const mainNavigation = createStackNavigator({
+  Main,
+  MatchDetail
+});
+
 const AppDrawerNavigator = createDrawerNavigator(
   {
-    Main
+    mainNavigation
   },
   {
     contentComponent: customDrawerComponent,
