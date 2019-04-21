@@ -8,7 +8,6 @@ import "moment/locale/pt-br";
 import CardMatch from "../components/CardMatch";
 import api from "../services/apiService";
 import HeaderMenu from "../components/HeaderMenu";
-import { DrawerItems } from "react-navigation";
 
 export default class Main extends Component {
   public props: any;

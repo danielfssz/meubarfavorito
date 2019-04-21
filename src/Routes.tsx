@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, Dimensions } from "react-native";
+import { View, Text, Image, Dimensions } from "react-native";
 import {
   createStackNavigator,
   createSwitchNavigator,
@@ -52,12 +52,25 @@ const customDrawerComponent = (props: any) => (
             alignSelf: "stretch",
             width: 150,
             height: 150,
-            alignItems: "center"
+            alignItems: "center",
+            marginTop: 10
           }}
         />
       </View>
     </View>
     <ScrollView>
+      <Text
+        style={{
+          margin: 10,
+          marginLeft: 20,
+          fontSize: 17,
+          fontWeight: "bold",
+          color: "#38C08E",
+          textAlign: "center"
+        }}
+      >
+        Seja nosso parceiro
+      </Text>
       <DrawerItems {...props} />
     </ScrollView>
   </SafeAreaView>
