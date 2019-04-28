@@ -1,11 +1,9 @@
-/*This is an Example to Use Keyboard Avoiding View and Request Focus in React Native*/
 import React, { Component } from "react";
 
 import {
   StyleSheet,
   TextInput,
   View,
-  Button,
   Text,
   KeyboardAvoidingView,
   Keyboard,
@@ -14,21 +12,75 @@ import {
 } from "react-native";
 import { Icon } from "react-native-elements";
 import HeaderMenu from "../components/HeaderMenu";
+import api from "../services/apiService";
 
-export default class SignIn extends Component {
+export default class SignIn extends Component<any, {}> {
   constructor(props: any) {
     super(props);
-    this.state = {
-      email: "",
-      senha: ""
-    };
   }
+
+  state = {
+    email: "",
+    senha: "",
+    error: ""
+  };
 
   static navigationOptions = {
     drawerLabel: "Login",
     drawerIcon: ({ tintColor }: any) => (
       <Icon name="sign-in" type="font-awesome" color={tintColor} />
     )
+  };
+
+  handleSubmitLogin = () => {
+    if (this.state.email.length === 0 || this.state.senha.length === 0) {
+      this.setState(
+        { error: "Preencha usuário e senha para continuar!" },
+        () => false
+      );
+      setTimeout(() => {
+        this.setState({ error: "" });
+      }, 3000);
+    } else {
+      try {
+        const { email, senha } = this.state;
+        api
+          .post("/login", { email, senha })
+          .then((response: any) => {
+            console.log("response");
+            console.log(response);
+
+            if (response.data.code == 200) {
+              if (response.data.body.token) {
+                this.props.navigation.navigate("SignedOut");
+              } else {
+                this.setState({
+                  error: "Erro ao recuperar token!"
+                });
+              }
+            } else {
+              if (response.data.code == 201) {
+                this.setState({
+                  error: "Registro ou senha inválidos!"
+                });
+              } else {
+                this.setState({ error: "Erro ao realizar login!" });
+              }
+            }
+          })
+          .catch(error => {
+            console.log(error);
+            this.setState({
+              error:
+                "Houve um problema com o login, verifique suas credenciais!"
+            });
+          });
+      } catch (_err) {
+        this.setState({
+          error: "Houve um problema com o login, verifique suas credenciais!"
+        });
+      }
+    }
   };
 
   render() {
@@ -41,7 +93,7 @@ export default class SignIn extends Component {
         }}
       >
         <View style={{ flex: 1 }}>
-          <HeaderMenu {...this.props} tituloTela="Faça seu login" />
+          <HeaderMenu {...this.props} back tituloTela="Faça seu login" />
         </View>
         <ScrollView keyboardShouldPersistTaps="handled">
           <View style={{ marginTop: 25 }}>
@@ -63,6 +115,7 @@ export default class SignIn extends Component {
                   placeholderTextColor="#413E4F"
                   autoCapitalize="sentences"
                   keyboardType="email-address"
+                  value={this.state.email}
                   // ref={ref => {
                   //   this._emailinput = ref;
                   // }}
@@ -90,6 +143,7 @@ export default class SignIn extends Component {
                   placeholder="Digite sua senha"
                   placeholderTextColor="#413E4F"
                   autoCapitalize="sentences"
+                  value={this.state.senha}
                   // ref={ref => {
                   // this._addressinput = ref;
                   // }}
@@ -102,7 +156,7 @@ export default class SignIn extends Component {
               <TouchableOpacity
                 style={styles.ButtonStyle}
                 activeOpacity={0.5}
-                onPress={() => {}}
+                onPress={this.handleSubmitLogin}
               >
                 <Text
                   style={{
@@ -114,6 +168,11 @@ export default class SignIn extends Component {
                   Entrar
                 </Text>
               </TouchableOpacity>
+              {this.state.error.length !== 0 && (
+                <View style={styles.divError}>
+                  <Text style={styles.textError}>{this.state.error}</Text>
+                </View>
+              )}
             </KeyboardAvoidingView>
           </View>
         </ScrollView>
@@ -142,5 +201,15 @@ const styles = StyleSheet.create({
     marginLeft: 35,
     marginRight: 35,
     marginTop: 30
+  },
+  divError: {
+    flex: 1,
+    alignItems: "center",
+    paddingTop: 20
+  },
+  textError: {
+    fontFamily: "Hebbo",
+    fontSize: 15,
+    color: "#EA2323"
   }
 });

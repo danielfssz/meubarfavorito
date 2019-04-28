@@ -17,23 +17,7 @@ import { Icon } from "react-native-elements";
 
 const { width } = Dimensions.get("window");
 
-const SignedOutRoutes = createStackNavigator(
-  {
-    Login: {
-      screen: SignIn
-    }
-  },
-  {
-    navigationOptions: {
-      drawerLabel: "Login",
-      drawerIcon: ({ tintColor }: any) => (
-        <Icon name="sign-in" type="font-awesome" color={tintColor} />
-      )
-    }
-  }
-);
-
-const customDrawerComponent = (props: any) => (
+const menuDrawer = (props: any) => (
   <SafeAreaView style={{ flex: 1 }}>
     <View
       style={{
@@ -101,13 +85,26 @@ const mainNavigation = createStackNavigator(
   }
 );
 
-const AppDrawerNavigator = createDrawerNavigator(
+const drawerNaoLogado = createDrawerNavigator(
   {
     mainNavigation,
     SignIn
   },
   {
-    contentComponent: customDrawerComponent,
+    contentComponent: menuDrawer,
+    drawerWidth: width * 0.75,
+    contentOptions: {
+      activeTintColor: "#38C08E"
+    }
+  }
+);
+
+const drawerLogado = createDrawerNavigator(
+  {
+    mainNavigation
+  },
+  {
+    contentComponent: menuDrawer,
     drawerWidth: width * 0.75,
     contentOptions: {
       activeTintColor: "#38C08E"
@@ -119,8 +116,8 @@ export const createRootNavigator = (signedIn = false) => {
   return createAppContainer(
     createSwitchNavigator(
       {
-        SignedIn: { screen: AppDrawerNavigator },
-        SignedOut: { screen: SignedOutRoutes }
+        SignedIn: { screen: drawerNaoLogado },
+        SignedOut: { screen: drawerLogado }
       },
       {
         initialRouteName: signedIn ? "SignedIn" : "SignedOut"

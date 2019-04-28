@@ -19,7 +19,7 @@ const CardMatch = (props: any) => {
             source={{
               uri:
                 "http://thenewcode.com/assets/images/thumbnails/homer-simpson.svg"
-              // uri: props.escudoMandante
+              // props.escudoMandante
             }}
           />
           <Image
@@ -34,7 +34,7 @@ const CardMatch = (props: any) => {
             source={{
               uri:
                 "http://thenewcode.com/assets/images/thumbnails/homer-simpson.svg"
-              // uri: props.escudoVisitante
+              // props.escudoVisitante
             }}
           />
           {/* <Image

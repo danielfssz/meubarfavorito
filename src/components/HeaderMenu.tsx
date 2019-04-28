@@ -15,6 +15,20 @@ export default class HeaderMenu extends Component {
           backgroundColor="#38C08E"
           leftComponent={
             <>
+              {this.props.back && (
+                <TouchableOpacity
+                  onPress={() =>
+                    this.props.navigation.navigate("mainNavigation")
+                  }
+                >
+                  <Icon
+                    containerStyle={{ paddingRight: 16 }}
+                    name="arrow-back"
+                    size={30}
+                    color="white"
+                  />
+                </TouchableOpacity>
+              )}
               {this.props.menu && (
                 <TouchableOpacity
                   onPress={() => this.props.navigation.openDrawer()}
