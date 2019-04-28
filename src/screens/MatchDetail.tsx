@@ -10,7 +10,10 @@ import {
 import moment from "moment";
 import "moment/locale/pt-br";
 
+import SvgUri from "react-native-svg-uri";
+
 import CardPub from "../components/CardPub";
+import api from "../services/apiService";
 
 export default class MatchDetail extends Component {
   public props: any;
@@ -33,36 +36,26 @@ export default class MatchDetail extends Component {
     listPubs: []
   };
 
-  ex = [
-    {
-      addressPub: "rua 12, 124",
-      namePub: "Bar do Carlinhos",
-      imagePub: "https://a.espncdn.com/i/teamlogos/soccer/500/2029.png"
-    },
-    {
-      addressPub: "rua 12, 124",
-      namePub: "Bar do Carlinhos",
-      imagePub: "https://a.espncdn.com/i/teamlogos/soccer/500/2029.png"
-    },
-    {
-      addressPub: "rua 12, 124",
-      namePub: "Bar do Carlinhos",
-      imagePub: "https://a.espncdn.com/i/teamlogos/soccer/500/2029.png"
-    },
-    {
-      addressPub: "rua 12, 124",
-      namePub: "Bar do Carlinhos",
-      imagePub: "https://a.espncdn.com/i/teamlogos/soccer/500/2029.png"
-    }
-  ];
+  getEventos = async () => {
+    api
+      .get("/partida/" + this.state.matchDetail.id + "/evento")
+      .then(data => {
+        this.setState({ listPubs: data.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   componentDidMount() {
-    this.setState({
-      matchDetail: this.props.navigation.state.params
-    });
-    this.setState({
-      listPubs: this.ex
-    });
+    this.setState(
+      {
+        matchDetail: this.props.navigation.state.params
+      },
+      () => {
+        this.getEventos();
+      }
+    );
   }
 
   render() {
@@ -72,10 +65,18 @@ export default class MatchDetail extends Component {
       <View style={styles.container}>
         <View style={styles.divHeader}>
           <View style={styles.divImages}>
-            <Image
+            {/* <Image
               style={styles.imageTeam}
               source={{
                 uri: matchDetail.escudoMandante
+              }}
+            /> */}
+            <SvgUri
+              width="50"
+              height="50"
+              source={{
+                uri:
+                  "http://thenewcode.com/assets/images/thumbnails/homer-simpson.svg"
               }}
             />
             <Image
@@ -85,12 +86,20 @@ export default class MatchDetail extends Component {
                   "https://karana.com.br/blog/wp-content/uploads/2016/06/x.png"
               }}
             />
-            <Image
+            <SvgUri
+              width="50"
+              height="50"
+              source={{
+                uri:
+                  "http://thenewcode.com/assets/images/thumbnails/homer-simpson.svg"
+              }}
+            />
+            {/* <Image
               style={styles.imageTeam}
               source={{
                 uri: matchDetail.escudoVisitante
               }}
-            />
+            /> */}
           </View>
         </View>
         <View style={styles.divContent}>
@@ -116,9 +125,9 @@ export default class MatchDetail extends Component {
                   }}
                 >
                   <CardPub
-                    namePub={item.namePub}
-                    addressPub={item.addressPub}
-                    imagePub={item.imagePub}
+                    nomeEstabelecimento={item.nomeEstabelecimento}
+                    enderecoEstabelecimento={item.enderecoEstabelecimento}
+                    imagemEstabelecimento={item.imagemEstabelecimento}
                   />
                 </TouchableOpacity>
               )}

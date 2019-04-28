@@ -16,8 +16,10 @@ const CardMatch = (props: any) => {
       </View>
       <View style={styles.divContent}>
         <View style={styles.divInformation}>
-          <Text style={styles.textPubName}>{props.namePub}</Text>
-          <Text style={styles.textPubAddress}>{props.addressPub}</Text>
+          <Text style={styles.textPubName}>{props.nomeEstabelecimento}</Text>
+          <Text style={styles.textPubAddress}>
+            {props.enderecoEstabelecimento}
+          </Text>
         </View>
       </View>
     </View>

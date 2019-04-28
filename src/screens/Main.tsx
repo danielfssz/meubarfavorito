@@ -27,75 +27,18 @@ export default class Main extends Component {
   };
 
   state = {
-    eventos: []
+    partidas: []
   };
 
-  ex = [
-    {
-      data: "Sun, 30 Jun 2019 21:45:00 GMT",
-      enderecoEstabelecimento: "rua 12, 124",
-      escudoMandante: "https://a.espncdn.com/i/teamlogos/soccer/500/2029.png",
-      escudoVisitante:
-        "https://a3.espncdn.com/combiner/i?img=%2Fi%2Fteamlogos%2Fsoccer%2F500%2F874.png",
-      id: 3,
-      nomeEstabelecimento: "Bar do Zé",
-      nomeMandante: "Palmeiras",
-      nomeVisitante: "Corinthians",
-      campeonato: "Campeonato Brasileiro",
-      views: 878
-    },
-    {
-      data: "Sun, 30 Jun 2019 21:45:00 GMT",
-      enderecoEstabelecimento: "rua 12, 124",
-      escudoMandante: "https://a.espncdn.com/i/teamlogos/soccer/500/2029.png",
-      escudoVisitante:
-        "https://a3.espncdn.com/combiner/i?img=%2Fi%2Fteamlogos%2Fsoccer%2F500%2F874.png",
-      id: 3,
-      nomeEstabelecimento: "Bar do Zé",
-      nomeMandante: "Palmeiras",
-      nomeVisitante: "Corinthians",
-      campeonato: "Campeonato Brasileiro",
-      views: 878
-    },
-    {
-      data: "Sun, 30 Jun 2019 21:45:00 GMT",
-      enderecoEstabelecimento: "rua 12, 124",
-      escudoMandante: "https://a.espncdn.com/i/teamlogos/soccer/500/2029.png",
-      escudoVisitante:
-        "https://a3.espncdn.com/combiner/i?img=%2Fi%2Fteamlogos%2Fsoccer%2F500%2F874.png",
-      id: 3,
-      nomeEstabelecimento: "Bar do Zé",
-      nomeMandante: "Palmeiras",
-      nomeVisitante: "Corinthians",
-      campeonato: "Campeonato Brasileiro",
-      views: 878
-    },
-    {
-      data: "Sun, 30 Jun 2019 21:45:00 GMT",
-      enderecoEstabelecimento: "rua 12, 124",
-      escudoMandante: "https://a.espncdn.com/i/teamlogos/soccer/500/2029.png",
-      escudoVisitante:
-        "https://a3.espncdn.com/combiner/i?img=%2Fi%2Fteamlogos%2Fsoccer%2F500%2F874.png",
-      id: 3,
-      nomeEstabelecimento: "Bar do Zé",
-      nomeMandante: "Palmeiras",
-      nomeVisitante: "Corinthians",
-      campeonato: "Campeonato Brasileiro",
-      views: 878
-    }
-  ];
-
   componentDidMount() {
-    this.setState({ eventos: this.ex });
-    // api
-    //   .get("/evento")
-    //   .then(data => {
-    //     console.log(data.data);
-    //     this.setState({ eventos: data.data });
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   });
+    api
+      .get("/partida")
+      .then(data => {
+        this.setState({ partidas: data.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   render() {
@@ -107,7 +50,7 @@ export default class Main extends Component {
         <View style={styles.divContent}>
           <FlatList
             keyExtractor={(item, index) => index.toString()}
-            data={this.state.eventos}
+            data={this.state.partidas}
             renderItem={({ item }: any) => (
               <TouchableOpacity
                 onPress={() => {
