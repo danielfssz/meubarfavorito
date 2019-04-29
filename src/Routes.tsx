@@ -14,6 +14,8 @@ import SignIn from "./screens/SignIn";
 import Main from "./screens/Main";
 import MatchDetail from "./screens/MatchDetail";
 import { Icon } from "react-native-elements";
+import Register from "./screens/Register";
+import RegisteredSuccessfully from "./screens/RegisteredSuccessfully";
 
 const { width } = Dimensions.get("window");
 
@@ -85,10 +87,29 @@ const mainNavigation = createStackNavigator(
   }
 );
 
+const registerNavigator = createSwitchNavigator({
+  Register,
+  RegisteredSuccessfully
+});
+
 const drawerNaoLogado = createDrawerNavigator(
   {
     mainNavigation,
-    SignIn
+    SignIn,
+    registerNavigator: {
+      screen: registerNavigator,
+      navigationOptions: {
+        drawerLabel: "Cadastre-se",
+        drawerIcon: ({ tintColor }: any) => (
+          <Icon
+            name="user-plus"
+            type="font-awesome"
+            size={20}
+            color={tintColor}
+          />
+        )
+      }
+    }
   },
   {
     contentComponent: menuDrawer,
