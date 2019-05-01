@@ -36,7 +36,8 @@ export default class Register extends Component<any, {}> {
       celular: "139912340000",
       email: "elifas@bardoelifas.com",
       senha: "123456",
-      fotoPerfil: ""
+      fotoPerfil: "",
+      fotosEstabelecimento: []
     }
   };
 

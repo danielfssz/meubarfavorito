@@ -1,10 +1,19 @@
 import React, { Component } from "react";
-import { Text, StyleSheet, View, ViewProps, Image, Button } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  View,
+  ViewProps,
+  Button,
+  SafeAreaView,
+  FlatList
+} from "react-native";
 import ImagePicker from "react-native-image-crop-picker";
 import { NavigationInjectedProps } from "react-navigation";
 
 import HeaderMenu from "../components/HeaderMenu";
 import api from "../services/apiService";
+import SelectImage from "../components/SelectImage";
 
 export default class PubPictures extends Component<NavigationInjectedProps> {
   constructor(props: Readonly<ViewProps & NavigationInjectedProps>) {
@@ -15,7 +24,7 @@ export default class PubPictures extends Component<NavigationInjectedProps> {
   };
 
   state: { [key: string]: any } = {
-    pickedImage: null,
+    pickedImages: [],
     infoRegister: {}
   };
 
@@ -34,8 +43,22 @@ export default class PubPictures extends Component<NavigationInjectedProps> {
     ImagePicker.openPicker({
       multiple: true,
       includeBase64: true
-    }).then(images => {
+    }).then((images: any) => {
       console.log(images);
+
+      this.setState({ pickedImages: images });
+
+      const newInfoRegister = Object.assign({}, this.state.infoRegister);
+
+      images.forEach((item: any) => {
+        newInfoRegister.fotosEstabelecimento.push(item.data);
+      });
+
+      console.log(newInfoRegister);
+
+      this.setState({
+        infoRegister: newInfoRegister
+      });
     });
   };
 
@@ -53,7 +76,8 @@ export default class PubPictures extends Component<NavigationInjectedProps> {
           celular,
           email,
           senha,
-          fotoPerfil
+          fotoPerfil,
+          fotosEstabelecimento
         } = this.state.infoRegister;
         api
           .post("/estabelecimento", {
@@ -66,9 +90,12 @@ export default class PubPictures extends Component<NavigationInjectedProps> {
             celular,
             email,
             senha,
-            fotoPerfil
+            fotoPerfil,
+            fotosEstabelecimento
           })
           .then((response: any) => {
+            console.log(response);
+
             if (response.data.code == 200) {
               this.props.navigation.navigate("RegisteredSuccessfully");
             } else {
@@ -98,7 +125,31 @@ export default class PubPictures extends Component<NavigationInjectedProps> {
     }
   };
 
+  createRows = (data: any, columns: any) => {
+    const rows = Math.floor(data.length / columns);
+    let lastRowElements = data.length - rows * columns;
+
+    while (lastRowElements !== columns) {
+      data.push({
+        id: `empty-${lastRowElements}`,
+        name: `empty-${lastRowElements}`,
+        empty: true
+      });
+      lastRowElements += 1;
+    }
+    return data;
+  };
+
+  deleteItem = (item: any) => {
+    this.setState({
+      pickedImages: this.state.pickedImages.filter(
+        (img: any) => img.path !== item.path
+      )
+    });
+  };
+
   render() {
+    const columns = 2;
     return (
       <View style={styles.container}>
         <View style={styles.divHeader}>
@@ -110,24 +161,40 @@ export default class PubPictures extends Component<NavigationInjectedProps> {
         </View>
         <View style={styles.divContent}>
           <View style={styles.title}>
-            <Text style={styles.txtTitle}>Selecione a foto do seu perfil!</Text>
+            <Text style={styles.txtTitle}>
+              Selecione as fotos do seu estabelecimento!
+            </Text>
           </View>
           <View style={styles.previewContainer}>
-            <View style={styles.previewImage}>
-              <Image
-                source={this.state.pickedImage}
-                style={styles.previewImage}
+            <SafeAreaView>
+              <FlatList
+                // data={this.createRows(this.state.pickedImages, columns)}
+                data={this.state.pickedImages}
+                keyExtractor={(_, i) => i.toString()}
+                numColumns={columns}
+                renderItem={({ item }: any) => {
+                  // if (item.empty) {
+                  //   return <View style={[styles.item, styles.itemEmpty]} />;
+                  // }
+                  return (
+                    <SelectImage item={item} deleteItem={this.deleteItem} />
+                  );
+                }}
               />
-            </View>
+            </SafeAreaView>
           </View>
           <View style={styles.divButtons}>
             <View style={styles.groupButton}>
               <Button
-                title="Mudar foto"
+                title="Selecionar fotos"
                 color="#38C08E"
                 onPress={this.pickImageHandler}
               />
-              <Button title="Concluir" color="#38C08E" onPress={() => {}} />
+              <Button
+                title="Finalizar cadastro"
+                color="#38C08E"
+                onPress={this.handleSubmitForm}
+              />
             </View>
           </View>
         </View>
@@ -151,8 +218,9 @@ const styles = StyleSheet.create({
   },
   previewContainer: {
     flex: 3,
-    width: "70%"
+    width: "90%"
   },
+  // tirar
   previewImage: {
     backgroundColor: "#eee",
     height: 280,
@@ -169,5 +237,20 @@ const styles = StyleSheet.create({
     flex: 2,
     flexDirection: "row",
     justifyContent: "space-around"
+  },
+  // antigo
+  // novo
+  item: {
+    alignItems: "center",
+    flexBasis: 0,
+    flexGrow: 1,
+    margin: 4,
+    padding: 60
+  },
+  itemEmpty: {
+    backgroundColor: "transparent"
+  },
+  text: {
+    color: "#333333"
   }
 });

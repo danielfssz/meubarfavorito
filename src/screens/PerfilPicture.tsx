@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Text, StyleSheet, View, ViewProps, Image, Button } from "react-native";
-import ImagePicker from "react-native-image-picker";
+import ImagePicker from "react-native-image-crop-picker";
+// import ImagePicker from "react-native-image-picker";
 import { NavigationInjectedProps } from "react-navigation";
 
 import HeaderMenu from "../components/HeaderMenu";
@@ -14,7 +15,7 @@ export default class PerfilPicture extends Component<NavigationInjectedProps> {
   };
 
   state: { [key: string]: any } = {
-    pickedImage: null,
+    pickedImage: {},
     infoRegister: {}
   };
 
@@ -30,23 +31,20 @@ export default class PerfilPicture extends Component<NavigationInjectedProps> {
   }
 
   pickImageHandler = () => {
-    ImagePicker.launchImageLibrary({}, res => {
-      if (res.didCancel) {
-        console.log("User cancelled!");
-      } else if (res.error) {
-        console.log("Error", res.error);
-      } else {
-        this.setState({
-          pickedImage: res
-        });
+    ImagePicker.openPicker({
+      includeBase64: true
+    }).then((res: any) => {
+      this.setState({
+        pickedImage: res
+      });
 
-        const newInfoRegister = Object.assign({}, this.state.infoRegister);
-        newInfoRegister.fotoPerfil = res.data;
+      const newInfoRegister = Object.assign({}, this.state.infoRegister);
+      newInfoRegister.fotoPerfil = res.data;
+      console.log(newInfoRegister);
 
-        this.setState({
-          infoRegister: newInfoRegister
-        });
-      }
+      this.setState({
+        infoRegister: newInfoRegister
+      });
     });
   };
 
@@ -68,7 +66,11 @@ export default class PerfilPicture extends Component<NavigationInjectedProps> {
           <View style={styles.previewContainer}>
             <View style={styles.previewImage}>
               <Image
-                source={this.state.pickedImage}
+                source={{
+                  uri: `data:${this.state.pickedImage.mime};base64,${
+                    this.state.pickedImage.data
+                  }`
+                }}
                 style={styles.previewImage}
               />
             </View>
