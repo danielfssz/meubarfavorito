@@ -43,7 +43,7 @@ export default class Register extends Component<any, {}> {
   handleSubmitForm = () => {
     if (!this.state.infoRegister.nome) {
     } else {
-      this.props.navigation.navigate("ChooseAPicture", this.state.infoRegister);
+      this.props.navigation.navigate("PerfilPicture", this.state.infoRegister);
     }
   };
 

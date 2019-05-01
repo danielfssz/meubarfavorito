@@ -16,7 +16,8 @@ import MatchDetail from "./screens/MatchDetail";
 import { Icon } from "react-native-elements";
 import Register from "./screens/Register";
 import RegisteredSuccessfully from "./screens/RegisteredSuccessfully";
-import ChooseAPerfilPicture from "./screens/ChooseAPerfilPicture";
+import PerfilPicture from "./screens/PerfilPicture";
+import PubPictures from "./screens/PubPictures";
 
 const { width } = Dimensions.get("window");
 
@@ -90,7 +91,8 @@ const mainNavigation = createStackNavigator(
 
 const registerNavigator = createStackNavigator({
   Register,
-  ChooseAPerfilPicture
+  PerfilPicture,
+  PubPictures
 });
 
 const switchRegisterNavigator = createSwitchNavigator({

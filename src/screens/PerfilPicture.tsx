@@ -4,9 +4,8 @@ import ImagePicker from "react-native-image-picker";
 import { NavigationInjectedProps } from "react-navigation";
 
 import HeaderMenu from "../components/HeaderMenu";
-import api from "../services/apiService";
 
-export default class ChooseAPicture extends Component<NavigationInjectedProps> {
+export default class PerfilPicture extends Component<NavigationInjectedProps> {
   constructor(props: Readonly<ViewProps & NavigationInjectedProps>) {
     super(props);
   }
@@ -41,8 +40,8 @@ export default class ChooseAPicture extends Component<NavigationInjectedProps> {
           pickedImage: res
         });
 
-        const newInfoRegister = Object.assign({}, this.state);
-        newInfoRegister.infoRegister.fotoPerfil = res.data;
+        const newInfoRegister = Object.assign({}, this.state.infoRegister);
+        newInfoRegister.fotoPerfil = res.data;
 
         this.setState({
           infoRegister: newInfoRegister
@@ -52,62 +51,8 @@ export default class ChooseAPicture extends Component<NavigationInjectedProps> {
   };
 
   handleSubmitForm = () => {
-    if (!this.state.infoRegister.nome) {
-    } else {
-      try {
-        const {
-          nome,
-          descricao,
-          cnpj,
-          endereco,
-          cep,
-          telefone,
-          celular,
-          email,
-          senha,
-          fotos
-        } = this.state.infoRegister;
-        api
-          .post("/estabelecimento", {
-            nome,
-            descricao,
-            cnpj,
-            endereco,
-            cep,
-            telefone,
-            celular,
-            email,
-            senha,
-            fotos
-          })
-          .then((response: any) => {
-            if (response.data.code == 200) {
-              this.props.navigation.navigate("RegisteredSuccessfully");
-            } else {
-              if (response.data.code == 409) {
-                this.setState({
-                  error: "CNPJ já cadastrado!"
-                });
-              } else {
-                this.setState({
-                  error: "Erro ao realizar cadastro!"
-                });
-              }
-            }
-          })
-          .catch(error => {
-            console.log(error);
-            this.setState({
-              error:
-                "Houve um problema com o login, verifique suas credenciais!"
-            });
-          });
-      } catch (_err) {
-        this.setState({
-          error: "Houve um problema com o login, verifique suas credenciais!"
-        });
-      }
-    }
+    console.log(this.state);
+    this.props.navigation.navigate("PubPictures", this.state.infoRegister);
   };
 
   render() {
@@ -135,7 +80,11 @@ export default class ChooseAPicture extends Component<NavigationInjectedProps> {
                 color="#38C08E"
                 onPress={this.pickImageHandler}
               />
-              <Button title="Concluir" color="#38C08E" onPress={() => {}} />
+              <Button
+                title="Próxima Etapa"
+                color="#38C08E"
+                onPress={this.handleSubmitForm}
+              />
             </View>
           </View>
         </View>
