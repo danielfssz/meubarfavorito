@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Text, StyleSheet, View, ViewProps, Image, Button } from "react-native";
-import ImagePicker from "react-native-image-picker";
+import ImagePicker from "react-native-image-crop-picker";
 import { NavigationInjectedProps } from "react-navigation";
 
 import HeaderMenu from "../components/HeaderMenu";
@@ -25,29 +25,17 @@ export default class PubPictures extends Component<NavigationInjectedProps> {
         infoRegister: this.props.navigation.state.params
       },
       () => {
-        // this.pickImageHandler();
+        this.pickImageHandler();
       }
     );
   }
 
   pickImageHandler = () => {
-    ImagePicker.launchImageLibrary({}, res => {
-      if (res.didCancel) {
-        console.log("User cancelled!");
-      } else if (res.error) {
-        console.log("Error", res.error);
-      } else {
-        this.setState({
-          pickedImage: res
-        });
-
-        const newInfoRegister = Object.assign({}, this.state);
-        newInfoRegister.infoRegister.fotoPerfil = res.data;
-
-        this.setState({
-          infoRegister: newInfoRegister
-        });
-      }
+    ImagePicker.openPicker({
+      multiple: true,
+      includeBase64: true
+    }).then(images => {
+      console.log(images);
     });
   };
 
