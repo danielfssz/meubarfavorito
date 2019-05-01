@@ -17,9 +17,7 @@ export default class HeaderMenu extends Component {
             <>
               {this.props.back && (
                 <TouchableOpacity
-                  onPress={() =>
-                    this.props.navigation.navigate("mainNavigation")
-                  }
+                  onPress={() => this.props.navigation.goBack(null)}
                 >
                   <Icon
                     containerStyle={{ paddingRight: 16 }}

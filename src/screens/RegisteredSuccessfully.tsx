@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
 import HeaderMenu from "../components/HeaderMenu";
-import { Button } from "react-native-elements";
 
 export default class RegisteredSuccessfully extends Component<any, {}> {
+  static navigationOptions = {
+    header: null
+  };
+
   render() {
     return (
       <View style={styles.container}>

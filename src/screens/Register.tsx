@@ -8,8 +8,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   TouchableOpacity,
-  ScrollView,
-  Alert
+  ScrollView
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
@@ -21,78 +20,30 @@ export default class Register extends Component<any, {}> {
     super(props);
   }
 
+  static navigationOptions = {
+    header: null
+  };
+
   state = {
     error: "",
-    nome: "Bar do Elifas",
-    descricao: "Barzinho do Elifas pra galera ver o jogo depois da aula",
-    cnpj: "54.519.566/0001-50",
-    endereco: "Rua Maria Cristina 50 - Cubatão/SP",
-    cep: "1234567",
-    telefone: "1332001234",
-    celular: "139912340000",
-    email: "elifas@bardoelifas.com",
-    senha: "123456",
-    fotos: []
+    infoRegister: {
+      nome: "Bar do Elifas",
+      descricao: "Barzinho do Elifas pra galera ver o jogo depois da aula",
+      cnpj: "54.519.566/0001-50",
+      endereco: "Rua Maria Cristina 50 - Cubatão/SP",
+      cep: "1234567",
+      telefone: "1332001234",
+      celular: "139912340000",
+      email: "elifas@bardoelifas.com",
+      senha: "123456",
+      fotoPerfil: ""
+    }
   };
 
   handleSubmitForm = () => {
-    this.props.navigation.navigate("RegisteredSuccessfully");
-    return;
-    if (!this.state.nome) {
+    if (!this.state.infoRegister.nome) {
     } else {
-      try {
-        const {
-          nome,
-          descricao,
-          cnpj,
-          endereco,
-          cep,
-          telefone,
-          celular,
-          email,
-          senha,
-          fotos
-        } = this.state;
-        api
-          .post("/estabelecimento", {
-            nome,
-            descricao,
-            cnpj,
-            endereco,
-            cep,
-            telefone,
-            celular,
-            email,
-            senha,
-            fotos
-          })
-          .then((response: any) => {
-            if (response.data.code == 200) {
-              this.props.navigation.navigate("RegisteredSuccessfully");
-            } else {
-              if (response.data.code == 409) {
-                this.setState({
-                  error: "CNPJ já cadastrado!"
-                });
-              } else {
-                this.setState({
-                  error: "Erro ao realizar cadastro!"
-                });
-              }
-            }
-          })
-          .catch(error => {
-            console.log(error);
-            this.setState({
-              error:
-                "Houve um problema com o login, verifique suas credenciais!"
-            });
-          });
-      } catch (_err) {
-        this.setState({
-          error: "Houve um problema com o login, verifique suas credenciais!"
-        });
-      }
+      this.props.navigation.navigate("ChooseAPicture", this.state.infoRegister);
     }
   };
 
@@ -129,7 +80,7 @@ export default class Register extends Component<any, {}> {
                     placeholder="Nome"
                     placeholderTextColor="#413E4F"
                     autoCapitalize="sentences"
-                    value={this.state.nome}
+                    value={this.state.infoRegister.nome}
                     returnKeyType="next"
                     blurOnSubmit={false}
                   />
@@ -152,7 +103,7 @@ export default class Register extends Component<any, {}> {
                     placeholder="Descrição do seu estabelecimento"
                     placeholderTextColor="#413E4F"
                     autoCapitalize="sentences"
-                    value={this.state.descricao}
+                    value={this.state.infoRegister.descricao}
                     blurOnSubmit={false}
                     multiline
                   />
@@ -175,7 +126,7 @@ export default class Register extends Component<any, {}> {
                     placeholder="CNPJ"
                     placeholderTextColor="#413E4F"
                     autoCapitalize="sentences"
-                    value={this.state.cnpj}
+                    value={this.state.infoRegister.cnpj}
                     returnKeyType="next"
                     blurOnSubmit={false}
                     keyboardType={"numeric"}
@@ -199,7 +150,7 @@ export default class Register extends Component<any, {}> {
                     placeholder="Endereço"
                     placeholderTextColor="#413E4F"
                     autoCapitalize="sentences"
-                    value={this.state.endereco}
+                    value={this.state.infoRegister.endereco}
                     returnKeyType="next"
                     blurOnSubmit={false}
                   />
@@ -222,7 +173,7 @@ export default class Register extends Component<any, {}> {
                     placeholder="CEP"
                     placeholderTextColor="#413E4F"
                     autoCapitalize="sentences"
-                    value={this.state.nome}
+                    value={this.state.infoRegister.nome}
                     returnKeyType="next"
                     blurOnSubmit={false}
                     keyboardType={"numeric"}
@@ -246,7 +197,7 @@ export default class Register extends Component<any, {}> {
                     placeholder="Telefone"
                     placeholderTextColor="#413E4F"
                     autoCapitalize="sentences"
-                    value={this.state.telefone}
+                    value={this.state.infoRegister.telefone}
                     returnKeyType="next"
                     blurOnSubmit={false}
                     keyboardType={"numeric"}
@@ -270,7 +221,7 @@ export default class Register extends Component<any, {}> {
                     placeholder="Celular"
                     placeholderTextColor="#413E4F"
                     autoCapitalize="sentences"
-                    value={this.state.celular}
+                    value={this.state.infoRegister.celular}
                     returnKeyType="next"
                     blurOnSubmit={false}
                     keyboardType={"numeric"}
@@ -296,7 +247,7 @@ export default class Register extends Component<any, {}> {
                     placeholderTextColor="#413E4F"
                     autoCapitalize="sentences"
                     keyboardType="email-address"
-                    value={this.state.email}
+                    value={this.state.infoRegister.email}
                     returnKeyType="next"
                     blurOnSubmit={false}
                   />
@@ -320,7 +271,7 @@ export default class Register extends Component<any, {}> {
                     placeholder="Digite sua senha"
                     placeholderTextColor="#413E4F"
                     autoCapitalize="sentences"
-                    value={this.state.senha}
+                    value={this.state.infoRegister.senha}
                     returnKeyType="send"
                     onSubmitEditing={Keyboard.dismiss}
                     blurOnSubmit={false}
@@ -339,7 +290,7 @@ export default class Register extends Component<any, {}> {
                       paddingVertical: 10
                     }}
                   >
-                    CADASTRAR
+                    PRÓXIMA ETAPA
                   </Text>
                 </TouchableOpacity>
                 {this.state.error.length !== 0 && (

@@ -16,6 +16,7 @@ import MatchDetail from "./screens/MatchDetail";
 import { Icon } from "react-native-elements";
 import Register from "./screens/Register";
 import RegisteredSuccessfully from "./screens/RegisteredSuccessfully";
+import ChooseAPerfilPicture from "./screens/ChooseAPerfilPicture";
 
 const { width } = Dimensions.get("window");
 
@@ -87,8 +88,13 @@ const mainNavigation = createStackNavigator(
   }
 );
 
-const registerNavigator = createSwitchNavigator({
+const registerNavigator = createStackNavigator({
   Register,
+  ChooseAPerfilPicture
+});
+
+const switchRegisterNavigator = createSwitchNavigator({
+  registerNavigator,
   RegisteredSuccessfully
 });
 
@@ -97,7 +103,7 @@ const drawerNaoLogado = createDrawerNavigator(
     mainNavigation,
     SignIn,
     registerNavigator: {
-      screen: registerNavigator,
+      screen: switchRegisterNavigator,
       navigationOptions: {
         drawerLabel: "Cadastre-se",
         drawerIcon: ({ tintColor }: any) => (
