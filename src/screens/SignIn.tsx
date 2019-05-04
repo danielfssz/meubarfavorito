@@ -46,9 +46,6 @@ export default class SignIn extends Component<any, {}> {
         const { email, senha } = this.state;
         onSignIn({ email, senha })
           .then((response: any) => {
-            console.log("response");
-            console.log(response);
-
             if (response.data.code == 200) {
               if (response.data.body.token) {
                 this.props.navigation.navigate("AreaLogada");
