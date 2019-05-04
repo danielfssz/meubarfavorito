@@ -11,9 +11,7 @@ import {
   ScrollView
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-
 import HeaderMenu from "../components/HeaderMenu";
-import api from "../services/apiService";
 
 export default class Register extends Component<any, {}> {
   constructor(props: any) {
