@@ -1,28 +1,25 @@
 import React from "react";
 
+import { Alert } from "react-native";
 import { createRootNavigator } from "./src/Routes";
-// import { isSignedIn, onSignOut } from "./src/service/auth";
+import { isSignedIn, onSignOut } from "./src/services/auth";
 
 export default class App extends React.Component {
   state = {
-    signed: true,
+    signed: false,
     signLoaded: true
   };
 
   componentWillMount() {
-    // isSignedIn()
-    //   .then(res => this.setState({ signed: res, signLoaded: true }))
-    //   .catch(err => alert("Erro"));
+    isSignedIn()
+      .then(res => this.setState({ signed: res, signLoaded: true }))
+      .catch(err =>
+        Alert.alert("Erro", "Erro ao tentar recuperar token no AsyncStorage")
+      );
   }
 
   componentDidMount() {
-    // onSignOut()
-    //   .then(() => {
-    //     console.log("limpou");
-    //   })
-    //   .catch(() => {
-    //     console.log("nao limpouo");
-    //   });
+    onSignOut();
   }
 
   render() {

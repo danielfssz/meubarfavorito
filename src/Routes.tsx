@@ -19,6 +19,7 @@ import Register from "./screens/Register";
 import RegisteredSuccessfully from "./screens/RegisteredSuccessfully";
 import PerfilPicture from "./screens/PerfilPicture";
 import PubPictures from "./screens/PubPictures";
+import CreateEvent from "./screens/CreateEvent";
 
 const { width } = Dimensions.get("window");
 
@@ -132,6 +133,7 @@ const drawerNaoLogado = createDrawerNavigator(
 const drawerLogado = createDrawerNavigator(
   {
     mainNavigation,
+    CreateEvent,
     SignOut
   },
   {
@@ -143,7 +145,7 @@ const drawerLogado = createDrawerNavigator(
   }
 );
 
-export const createRootNavigator = (signedIn = false) => {
+export const createRootNavigator = (logado = false) => {
   return createAppContainer(
     createSwitchNavigator(
       {
@@ -151,7 +153,7 @@ export const createRootNavigator = (signedIn = false) => {
         AreaLogada: { screen: drawerLogado }
       },
       {
-        initialRouteName: signedIn ? "AreaNaoLogada" : "AreaLogada"
+        initialRouteName: logado ? "AreaLogada" : "AreaNaoLogada"
       }
     )
   );
