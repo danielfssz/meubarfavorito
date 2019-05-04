@@ -165,7 +165,7 @@ export default class PubPictures extends Component<NavigationInjectedProps> {
         </View>
         <View style={styles.divContent}>
           <View style={styles.title}>
-            <Text style={styles.txtTitle}>
+            <Text style={styles.text}>
               Selecione as fotos do seu estabelecimento!
             </Text>
           </View>
@@ -189,7 +189,7 @@ export default class PubPictures extends Component<NavigationInjectedProps> {
           </View>
           {this.state.error ? (
             <View style={styles.divFooter}>
-              <Text>{this.state.error}</Text>
+              <Text style={styles.text}>{this.state.error}</Text>
             </View>
           ) : (
             <View style={styles.divFooter}>
@@ -209,10 +209,8 @@ export default class PubPictures extends Component<NavigationInjectedProps> {
                   </>
                 ) : (
                   <>
-                    <Text style={styles.txtTitle}>
-                      Enviando seu cadastro...
-                    </Text>
-                    <ActivityIndicator animating size="small" color="#38C08E" />
+                    <Text style={styles.text}>Enviando seu cadastro...</Text>
+                    <ActivityIndicator animating size="large" color="#38C08E" />
                   </>
                 )}
               </View>
@@ -231,7 +229,7 @@ const styles = StyleSheet.create({
   title: {
     flex: 1
   },
-  txtTitle: {
+  text: {
     color: "#38C08E",
     fontSize: 20,
     textAlign: "center",
@@ -241,7 +239,6 @@ const styles = StyleSheet.create({
     flex: 3,
     width: "90%"
   },
-  // tirar
   previewImage: {
     backgroundColor: "#eee",
     height: 280,
@@ -268,8 +265,5 @@ const styles = StyleSheet.create({
   },
   itemEmpty: {
     backgroundColor: "transparent"
-  },
-  text: {
-    color: "#333333"
   }
 });
