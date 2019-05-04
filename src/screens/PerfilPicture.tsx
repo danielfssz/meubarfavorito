@@ -39,7 +39,6 @@ export default class PerfilPicture extends Component<NavigationInjectedProps> {
 
       const newInfoRegister = Object.assign({}, this.state.infoRegister);
       newInfoRegister.fotoPerfil = res.data;
-      console.log(newInfoRegister);
 
       this.setState({
         infoRegister: newInfoRegister
@@ -48,7 +47,6 @@ export default class PerfilPicture extends Component<NavigationInjectedProps> {
   };
 
   handleSubmitForm = () => {
-    console.log(this.state);
     this.props.navigation.navigate("PubPictures", this.state.infoRegister);
   };
 
