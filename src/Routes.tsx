@@ -11,6 +11,7 @@ import {
 } from "react-navigation";
 
 import SignIn from "./screens/SignIn";
+import SignOut from "./screens/SignOut";
 import Main from "./screens/Main";
 import MatchDetail from "./screens/MatchDetail";
 import { Icon } from "react-native-elements";
@@ -130,7 +131,8 @@ const drawerNaoLogado = createDrawerNavigator(
 
 const drawerLogado = createDrawerNavigator(
   {
-    mainNavigation
+    mainNavigation,
+    SignOut
   },
   {
     contentComponent: menuDrawer,
@@ -145,11 +147,11 @@ export const createRootNavigator = (signedIn = false) => {
   return createAppContainer(
     createSwitchNavigator(
       {
-        SignedIn: { screen: drawerNaoLogado },
-        SignedOut: { screen: drawerLogado }
+        AreaNaoLogada: { screen: drawerNaoLogado },
+        AreaLogada: { screen: drawerLogado }
       },
       {
-        initialRouteName: signedIn ? "SignedIn" : "SignedOut"
+        initialRouteName: signedIn ? "AreaNaoLogada" : "AreaLogada"
       }
     )
   );

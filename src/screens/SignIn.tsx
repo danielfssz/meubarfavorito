@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { Icon } from "react-native-elements";
 import HeaderMenu from "../components/HeaderMenu";
-import api from "../services/apiService";
+import { onSignIn } from "../services/auth";
 
 export default class SignIn extends Component<any, {}> {
   constructor(props: any) {
@@ -44,15 +44,14 @@ export default class SignIn extends Component<any, {}> {
     } else {
       try {
         const { email, senha } = this.state;
-        api
-          .post("/login", { email, senha })
+        onSignIn({ email, senha })
           .then((response: any) => {
             console.log("response");
             console.log(response);
 
             if (response.data.code == 200) {
               if (response.data.body.token) {
-                this.props.navigation.navigate("SignedOut");
+                this.props.navigation.navigate("AreaLogada");
               } else {
                 this.setState({
                   error: "Erro ao recuperar token!"
