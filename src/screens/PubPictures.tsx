@@ -6,7 +6,9 @@ import {
   ViewProps,
   Button,
   SafeAreaView,
-  FlatList
+  FlatList,
+  ActivityIndicator,
+  Alert
 } from "react-native";
 import ImagePicker from "react-native-image-crop-picker";
 import { NavigationInjectedProps } from "react-navigation";
@@ -25,7 +27,9 @@ export default class PubPictures extends Component<NavigationInjectedProps> {
 
   state: { [key: string]: any } = {
     pickedImages: [],
-    infoRegister: {}
+    infoRegister: {},
+    finished: false,
+    error: null
   };
 
   componentDidMount() {
@@ -44,27 +48,33 @@ export default class PubPictures extends Component<NavigationInjectedProps> {
       multiple: true,
       includeBase64: true
     }).then((images: any) => {
-      console.log(images);
-
       this.setState({ pickedImages: images });
-
-      const newInfoRegister = Object.assign({}, this.state.infoRegister);
-
-      images.forEach((item: any) => {
-        newInfoRegister.fotosEstabelecimento.push(item.data);
-      });
-
-      console.log(newInfoRegister);
-
-      this.setState({
-        infoRegister: newInfoRegister
-      });
     });
   };
 
-  handleSubmitForm = () => {
-    if (!this.state.infoRegister.nome) {
+  selectedImagesToSend = async () => {
+    const newInfoRegister = Object.assign({}, this.state.infoRegister);
+
+    this.state.pickedImages.forEach((item: any) => {
+      if (item === undefined) return;
+      newInfoRegister.fotosEstabelecimento.push(item.data);
+    });
+
+    await this.setState({
+      infoRegister: newInfoRegister
+    });
+  };
+
+  handleSubmitForm = async () => {
+    await this.selectedImagesToSend();
+    if (this.state.infoRegister.fotosEstabelecimento.length < 1) {
+      Alert.alert(
+        "Cadastro",
+        "Você deve selecionar pelo menos 1 foto do seu estabelecimento"
+      );
+      return;
     } else {
+      this.setState({ finished: true });
       try {
         const {
           nome,
@@ -94,32 +104,26 @@ export default class PubPictures extends Component<NavigationInjectedProps> {
             fotosEstabelecimento
           })
           .then((response: any) => {
-            console.log(response);
-
             if (response.data.code == 200) {
               this.props.navigation.navigate("RegisteredSuccessfully");
-            } else {
-              if (response.data.code == 409) {
-                this.setState({
-                  error: "CNPJ já cadastrado!"
-                });
-              } else {
-                this.setState({
-                  error: "Erro ao realizar cadastro!"
-                });
-              }
             }
           })
-          .catch(error => {
-            console.log(error);
-            this.setState({
-              error:
-                "Houve um problema com o login, verifique suas credenciais!"
-            });
+          .catch(_ => {
+            const error = _.response.data;
+
+            if (error.code === 409) {
+              this.setState({
+                error: "CNPJ já cadastrado, verifique novamente."
+              });
+            } else {
+              this.setState({
+                error: "Erro ao realizar cadastro!"
+              });
+            }
           });
       } catch (_err) {
         this.setState({
-          error: "Houve um problema com o login, verifique suas credenciais!"
+          error: "Houve um problema com o cadastro, verifique suas informações!"
         });
       }
     }
@@ -183,20 +187,37 @@ export default class PubPictures extends Component<NavigationInjectedProps> {
               />
             </SafeAreaView>
           </View>
-          <View style={styles.divButtons}>
-            <View style={styles.groupButton}>
-              <Button
-                title="Selecionar fotos"
-                color="#38C08E"
-                onPress={this.pickImageHandler}
-              />
-              <Button
-                title="Finalizar cadastro"
-                color="#38C08E"
-                onPress={this.handleSubmitForm}
-              />
+          {this.state.error ? (
+            <View style={styles.divFooter}>
+              <Text>{this.state.error}</Text>
             </View>
-          </View>
+          ) : (
+            <View style={styles.divFooter}>
+              <View style={styles.groupButton}>
+                {!this.state.finished ? (
+                  <>
+                    <Button
+                      title="Selecionar fotos"
+                      color="#38C08E"
+                      onPress={this.pickImageHandler}
+                    />
+                    <Button
+                      title="Finalizar cadastro"
+                      color="#38C08E"
+                      onPress={this.handleSubmitForm}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Text style={styles.txtTitle}>
+                      Enviando seu cadastro...
+                    </Text>
+                    <ActivityIndicator animating size="small" color="#38C08E" />
+                  </>
+                )}
+              </View>
+            </View>
+          )}
         </View>
       </View>
     );
@@ -226,7 +247,7 @@ const styles = StyleSheet.create({
     height: 280,
     width: "100%"
   },
-  divButtons: {
+  divFooter: {
     flex: 2,
     marginTop: 10,
     alignItems: "center",
@@ -238,8 +259,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around"
   },
-  // antigo
-  // novo
   item: {
     alignItems: "center",
     flexBasis: 0,
