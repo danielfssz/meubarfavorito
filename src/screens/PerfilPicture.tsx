@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Text, StyleSheet, View, ViewProps, Image, Button } from "react-native";
 import ImagePicker from "react-native-image-crop-picker";
-// import ImagePicker from "react-native-image-picker";
 import { NavigationInjectedProps } from "react-navigation";
 
 import HeaderMenu from "../components/HeaderMenu";
