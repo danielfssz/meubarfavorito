@@ -26,25 +26,52 @@ export default class Register extends Component<any, {}> {
 
   state = {
     error: "",
-    infoRegister: {
-      nome: "Bar do Elifas",
-      descricao: "Barzinho do Elifas pra galera ver o jogo depois da aula",
-      cnpj: "54.519.566/0001-50",
-      endereco: "Rua Maria Cristina 50 - Cubatão/SP",
-      cep: "1234567",
-      telefone: "1332001234",
-      celular: "139912340000",
-      email: "elifas@bardoelifas.com",
-      senha: "123456",
-      fotoPerfil: "",
-      fotosEstabelecimento: []
-    }
+    nome: "Bar do Elifas",
+    descricao: "Barzinho do Elifas pra galera ver o jogo depois da aula",
+    cnpj: "54.519.566/0001-50",
+    endereco: "Rua Maria Cristina 50 - Cubatão/SP",
+    cep: "1234567",
+    telefone: "1332001234",
+    celular: "139912340000",
+    email: "elifas@bardoelifas.com",
+    senha: "123456",
+    fotoPerfil: "",
+    fotosEstabelecimento: []
   };
 
   handleSubmitForm = () => {
-    if (!this.state.infoRegister.nome) {
+    if (!this.state.nome) {
     } else {
-      this.props.navigation.navigate("PerfilPicture", this.state.infoRegister);
+      const {
+        nome,
+        descricao,
+        cnpj,
+        endereco,
+        cep,
+        telefone,
+        celular,
+        email,
+        senha,
+        fotoPerfil,
+        fotosEstabelecimento
+      } = this.state;
+
+      const infoRegister = {
+        nome,
+        descricao,
+        cnpj,
+        endereco,
+        cep,
+        telefone,
+        celular,
+        email,
+        senha,
+        fotoPerfil,
+        fotosEstabelecimento
+      };
+      console.log(infoRegister);
+
+      this.props.navigation.navigate("PerfilPicture", infoRegister);
     }
   };
 
@@ -81,7 +108,7 @@ export default class Register extends Component<any, {}> {
                     placeholder="Nome"
                     placeholderTextColor="#413E4F"
                     autoCapitalize="sentences"
-                    value={this.state.infoRegister.nome}
+                    value={this.state.nome}
                     returnKeyType="next"
                     blurOnSubmit={false}
                   />
@@ -104,7 +131,7 @@ export default class Register extends Component<any, {}> {
                     placeholder="Descrição do seu estabelecimento"
                     placeholderTextColor="#413E4F"
                     autoCapitalize="sentences"
-                    value={this.state.infoRegister.descricao}
+                    value={this.state.descricao}
                     blurOnSubmit={false}
                     multiline
                   />
@@ -127,7 +154,7 @@ export default class Register extends Component<any, {}> {
                     placeholder="CNPJ"
                     placeholderTextColor="#413E4F"
                     autoCapitalize="sentences"
-                    value={this.state.infoRegister.cnpj}
+                    value={this.state.cnpj}
                     returnKeyType="next"
                     blurOnSubmit={false}
                     keyboardType={"numeric"}
@@ -151,7 +178,7 @@ export default class Register extends Component<any, {}> {
                     placeholder="Endereço"
                     placeholderTextColor="#413E4F"
                     autoCapitalize="sentences"
-                    value={this.state.infoRegister.endereco}
+                    value={this.state.endereco}
                     returnKeyType="next"
                     blurOnSubmit={false}
                   />
@@ -174,7 +201,7 @@ export default class Register extends Component<any, {}> {
                     placeholder="CEP"
                     placeholderTextColor="#413E4F"
                     autoCapitalize="sentences"
-                    value={this.state.infoRegister.nome}
+                    value={this.state.nome}
                     returnKeyType="next"
                     blurOnSubmit={false}
                     keyboardType={"numeric"}
@@ -198,7 +225,7 @@ export default class Register extends Component<any, {}> {
                     placeholder="Telefone"
                     placeholderTextColor="#413E4F"
                     autoCapitalize="sentences"
-                    value={this.state.infoRegister.telefone}
+                    value={this.state.telefone}
                     returnKeyType="next"
                     blurOnSubmit={false}
                     keyboardType={"numeric"}
@@ -222,7 +249,7 @@ export default class Register extends Component<any, {}> {
                     placeholder="Celular"
                     placeholderTextColor="#413E4F"
                     autoCapitalize="sentences"
-                    value={this.state.infoRegister.celular}
+                    value={this.state.celular}
                     returnKeyType="next"
                     blurOnSubmit={false}
                     keyboardType={"numeric"}
@@ -248,7 +275,7 @@ export default class Register extends Component<any, {}> {
                     placeholderTextColor="#413E4F"
                     autoCapitalize="sentences"
                     keyboardType="email-address"
-                    value={this.state.infoRegister.email}
+                    value={this.state.email}
                     returnKeyType="next"
                     blurOnSubmit={false}
                   />
@@ -272,7 +299,7 @@ export default class Register extends Component<any, {}> {
                     placeholder="Digite sua senha"
                     placeholderTextColor="#413E4F"
                     autoCapitalize="sentences"
-                    value={this.state.infoRegister.senha}
+                    value={this.state.senha}
                     returnKeyType="send"
                     onSubmitEditing={Keyboard.dismiss}
                     blurOnSubmit={false}
@@ -291,7 +318,7 @@ export default class Register extends Component<any, {}> {
                       paddingVertical: 10
                     }}
                   >
-                    PRÓXIMA ETAPA
+                    SELECIONE A FOTO DE PERFIL
                   </Text>
                 </TouchableOpacity>
                 {this.state.error.length !== 0 && (
