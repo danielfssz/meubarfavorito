@@ -1,25 +1,15 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
-import SvgUri from "react-native-svg-uri";
 
 const CardMatch = (props: any) => {
   return (
     <View style={styles.container}>
       <View style={styles.divHeader}>
         <View style={styles.divImages}>
-          {/* <Image
+          <Image
             style={styles.imageTeam}
             source={{
               uri: props.escudoMandante
-            }}
-          /> */}
-          <SvgUri
-            width="50"
-            height="50"
-            source={{
-              uri:
-                "http://thenewcode.com/assets/images/thumbnails/homer-simpson.svg"
-              // props.escudoMandante
             }}
           />
           <Image
@@ -28,21 +18,12 @@ const CardMatch = (props: any) => {
               uri: "https://karana.com.br/blog/wp-content/uploads/2016/06/x.png"
             }}
           />
-          <SvgUri
-            width="50"
-            height="50"
-            source={{
-              uri:
-                "http://thenewcode.com/assets/images/thumbnails/homer-simpson.svg"
-              // props.escudoVisitante
-            }}
-          />
-          {/* <Image
+          <Image
             style={styles.imageTeam}
             source={{
               uri: props.escudoVisitante
             }}
-          /> */}
+          />
         </View>
       </View>
       <View style={styles.divContent}>

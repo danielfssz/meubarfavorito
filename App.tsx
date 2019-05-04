@@ -29,7 +29,8 @@ export default class App extends React.Component {
       return null;
     }
 
-    const Layout = createRootNavigator(signed);
+    // const Layout = createRootNavigator(signed);
+    const Layout = createRootNavigator(true);
     return <Layout />;
   }
 }

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
-import HeaderMenu from "../components/HeaderMenu";
+import HeaderMenu from "../../components/HeaderMenu";
 
 export default class RegisteredSuccessfully extends Component<any, {}> {
   static navigationOptions = {

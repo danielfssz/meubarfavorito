@@ -5,11 +5,11 @@ import { Icon } from "react-native-elements";
 import moment from "moment";
 // import "moment/locale/pt-br";
 
-import CardMatch from "../components/CardMatch";
-import api from "../services/apiService";
-import HeaderMenu from "../components/HeaderMenu";
+import CardMatch from "../../components/CardMatch";
+import api from "../../services/apiService";
+import HeaderMenu from "../../components/HeaderMenu";
 
-export default class Main extends Component {
+export default class SelectMatch extends Component {
   public props: any;
 
   constructor(props: any) {
@@ -19,10 +19,9 @@ export default class Main extends Component {
 
   static navigationOptions = {
     header: null,
-    drawerLabel: "Início",
-    title: "Home",
+    drawerLabel: "Criar evento",
     drawerIcon: ({ tintColor }: any) => (
-      <Icon name="home" type="font-awesome" color={tintColor} />
+      <Icon name="plus-square" type="font-awesome" color={tintColor} />
     )
   };
 
@@ -55,7 +54,7 @@ export default class Main extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.divHeader}>
-          <HeaderMenu {...this.props} menu tituloTela="Meu Bar Favorito" />
+          <HeaderMenu {...this.props} menu tituloTela="Selecione uma partida" />
         </View>
         <View style={styles.divContent}>
           <FlatList

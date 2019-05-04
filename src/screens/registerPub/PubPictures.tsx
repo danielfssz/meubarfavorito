@@ -13,9 +13,9 @@ import {
 import ImagePicker from "react-native-image-crop-picker";
 import { NavigationInjectedProps } from "react-navigation";
 
-import HeaderMenu from "../components/HeaderMenu";
-import api from "../services/apiService";
-import SelectImage from "../components/SelectImage";
+import HeaderMenu from "../../components/HeaderMenu";
+import api from "../../services/apiService";
+import SelectImage from "../../components/SelectImage";
 
 export default class PubPictures extends Component<NavigationInjectedProps> {
   constructor(props: Readonly<ViewProps & NavigationInjectedProps>) {

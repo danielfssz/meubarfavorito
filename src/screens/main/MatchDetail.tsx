@@ -12,8 +12,8 @@ import "moment/locale/pt-br";
 
 import SvgUri from "react-native-svg-uri";
 
-import CardPub from "../components/CardPub";
-import api from "../services/apiService";
+import CardPub from "../../components/CardPub";
+import api from "../../services/apiService";
 
 export default class MatchDetail extends Component {
   public props: any;
@@ -65,18 +65,10 @@ export default class MatchDetail extends Component {
       <View style={styles.container}>
         <View style={styles.divHeader}>
           <View style={styles.divImages}>
-            {/* <Image
+            <Image
               style={styles.imageTeam}
               source={{
                 uri: matchDetail.escudoMandante
-              }}
-            /> */}
-            <SvgUri
-              width="50"
-              height="50"
-              source={{
-                uri:
-                  "http://thenewcode.com/assets/images/thumbnails/homer-simpson.svg"
               }}
             />
             <Image
@@ -94,19 +86,19 @@ export default class MatchDetail extends Component {
                   "http://thenewcode.com/assets/images/thumbnails/homer-simpson.svg"
               }}
             />
-            {/* <Image
+            <Image
               style={styles.imageTeam}
               source={{
                 uri: matchDetail.escudoVisitante
               }}
-            /> */}
+            />
           </View>
         </View>
         <View style={styles.divContent}>
           <View style={styles.divMatchDetail}>
             <Text style={styles.textInfoTeams}>{matchDetail.campeonato}</Text>
             <Text style={styles.textInfoData}>
-              {moment(matchDetail.data).format("LLLL")}
+              {moment(matchDetail.dataHora).format("LLLL")}
             </Text>
           </View>
           <View style={styles.divMatchViews}>

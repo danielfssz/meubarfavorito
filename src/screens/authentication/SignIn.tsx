@@ -11,8 +11,8 @@ import {
   ScrollView
 } from "react-native";
 import { Icon } from "react-native-elements";
-import HeaderMenu from "../components/HeaderMenu";
-import { onSignIn } from "../services/auth";
+import HeaderMenu from "../../components/HeaderMenu";
+import { onSignIn } from "../../services/auth";
 
 export default class SignIn extends Component<any, {}> {
   constructor(props: any) {

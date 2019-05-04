@@ -9,17 +9,20 @@ import {
   DrawerItems,
   createDrawerNavigator
 } from "react-navigation";
-
-import SignIn from "./screens/SignIn";
-import SignOut from "./screens/SignOut";
-import Main from "./screens/Main";
-import MatchDetail from "./screens/MatchDetail";
 import { Icon } from "react-native-elements";
-import Register from "./screens/Register";
-import RegisteredSuccessfully from "./screens/RegisteredSuccessfully";
-import PerfilPicture from "./screens/PerfilPicture";
-import PubPictures from "./screens/PubPictures";
-import CreateEvent from "./screens/CreateEvent";
+
+import Main from "./screens/main/Main";
+import MatchDetail from "./screens/main/MatchDetail";
+
+import SignIn from "./screens/authentication/SignIn";
+import SignOut from "./screens/authentication/SignOut";
+
+import Register from "./screens/registerPub/Register";
+import PerfilPicture from "./screens/registerPub/PerfilPicture";
+import PubPictures from "./screens/registerPub/PubPictures";
+import RegisteredSuccessfully from "./screens/registerPub/RegisteredSuccessfully";
+
+import SelectMatch from "./screens/createEvent/SelectMatch";
 
 const { width } = Dimensions.get("window");
 
@@ -133,7 +136,7 @@ const drawerNaoLogado = createDrawerNavigator(
 const drawerLogado = createDrawerNavigator(
   {
     mainNavigation,
-    CreateEvent,
+    SelectMatch,
     SignOut
   },
   {

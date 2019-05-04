@@ -3,7 +3,7 @@ import { Text, StyleSheet, View, ViewProps, Image, Button } from "react-native";
 import ImagePicker from "react-native-image-crop-picker";
 import { NavigationInjectedProps } from "react-navigation";
 
-import HeaderMenu from "../components/HeaderMenu";
+import HeaderMenu from "../../components/HeaderMenu";
 
 export default class PerfilPicture extends Component<NavigationInjectedProps> {
   constructor(props: Readonly<ViewProps & NavigationInjectedProps>) {
