@@ -3,7 +3,7 @@ import { View, StyleSheet, FlatList } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Icon } from "react-native-elements";
 import moment from "moment";
-import "moment/locale/pt-br";
+// import "moment/locale/pt-br";
 
 import CardMatch from "../components/CardMatch";
 import api from "../services/apiService";
@@ -14,7 +14,7 @@ export default class Main extends Component {
 
   constructor(props: any) {
     super(props);
-    moment.locale("pt-BR");
+    // moment.locale("pt-BR");
   }
 
   static navigationOptions = {
@@ -30,15 +30,25 @@ export default class Main extends Component {
     partidas: []
   };
 
+  _isMounted = false;
+
   componentDidMount() {
+    this._isMounted = true;
+
     api
       .get("/partida")
       .then(data => {
-        this.setState({ partidas: data.data });
+        if (this._isMounted) {
+          this.setState({ partidas: data.data });
+        }
       })
       .catch(error => {
         console.log(error);
       });
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   render() {
@@ -63,7 +73,7 @@ export default class Main extends Component {
                   escudoMandante={item.escudoMandante}
                   escudoVisitante={item.escudoVisitante}
                   campeonato={item.campeonato}
-                  horario={moment(item.data).format("LLLL")}
+                  horario={moment(item.dataHora).format("LLLL")}
                   views={item.views}
                 />
               </TouchableOpacity>
