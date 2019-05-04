@@ -10,8 +10,6 @@ import {
 import moment from "moment";
 import "moment/locale/pt-br";
 
-import SvgUri from "react-native-svg-uri";
-
 import CardPub from "../../components/CardPub";
 import api from "../../services/apiService";
 
@@ -76,14 +74,6 @@ export default class MatchDetail extends Component {
               source={{
                 uri:
                   "https://karana.com.br/blog/wp-content/uploads/2016/06/x.png"
-              }}
-            />
-            <SvgUri
-              width="50"
-              height="50"
-              source={{
-                uri:
-                  "http://thenewcode.com/assets/images/thumbnails/homer-simpson.svg"
               }}
             />
             <Image
