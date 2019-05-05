@@ -14,9 +14,7 @@ const CardMatch = (props: any) => {
           />
           <Image
             style={styles.imageVersus}
-            source={{
-              uri: "https://karana.com.br/blog/wp-content/uploads/2016/06/x.png"
-            }}
+            source={require("../assets/x.png")}
           />
           <Image
             style={styles.imageTeam}
