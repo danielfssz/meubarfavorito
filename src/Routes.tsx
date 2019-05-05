@@ -9,7 +9,7 @@ import {
   DrawerItems,
   createDrawerNavigator
 } from "react-navigation";
-import { Icon } from "react-native-elements";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import Main from "./screens/main/Main";
 import MatchDetail from "./screens/main/MatchDetail";
@@ -22,7 +22,9 @@ import PerfilPicture from "./screens/registerPub/PerfilPicture";
 import PubPictures from "./screens/registerPub/PubPictures";
 import RegisteredSuccessfully from "./screens/registerPub/RegisteredSuccessfully";
 
+import CreateEvent from "./screens/createEvent/CreateEvent";
 import SelectMatch from "./screens/createEvent/SelectMatch";
+import SelectHourEvent from "./screens/createEvent/SelectHourEvent";
 
 const { width } = Dimensions.get("window");
 
@@ -88,7 +90,7 @@ const mainNavigation = createStackNavigator(
     navigationOptions: {
       drawerLabel: "Início",
       drawerIcon: ({ tintColor }: any) => (
-        <Icon name="home" type="font-awesome" color={tintColor} />
+        <Icon name="home" size={20} color={tintColor} />
       )
     }
   }
@@ -105,6 +107,17 @@ const switchRegisterNavigator = createSwitchNavigator({
   RegisteredSuccessfully
 });
 
+const createEventNavigator = createStackNavigator({
+  CreateEvent,
+  SelectMatch,
+  SelectHourEvent
+});
+
+const switchCreateEventNavigator = createSwitchNavigator({
+  createEventNavigator,
+  RegisteredSuccessfully
+});
+
 const drawerNaoLogado = createDrawerNavigator(
   {
     mainNavigation,
@@ -114,12 +127,7 @@ const drawerNaoLogado = createDrawerNavigator(
       navigationOptions: {
         drawerLabel: "Cadastre-se",
         drawerIcon: ({ tintColor }: any) => (
-          <Icon
-            name="user-plus"
-            type="font-awesome"
-            size={20}
-            color={tintColor}
-          />
+          <Icon name="account-plus" size={20} color={tintColor} />
         )
       }
     }
@@ -136,7 +144,15 @@ const drawerNaoLogado = createDrawerNavigator(
 const drawerLogado = createDrawerNavigator(
   {
     mainNavigation,
-    SelectMatch,
+    switchCreateEventNavigator: {
+      screen: switchCreateEventNavigator,
+      navigationOptions: {
+        drawerLabel: "Crie um evento",
+        drawerIcon: ({ tintColor }: any) => (
+          <Icon name="soccer" size={20} color={tintColor} />
+        )
+      }
+    },
     SignOut
   },
   {

@@ -50,6 +50,14 @@ export default class SelectMatch extends Component {
     this._isMounted = false;
   }
 
+  handleSelectedMatch = (item: any) => {
+    const { navigation } = this.props;
+    navigation.goBack();
+    navigation.state.params.onSelect({
+      selected: item
+    });
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -63,7 +71,7 @@ export default class SelectMatch extends Component {
             renderItem={({ item }: any) => (
               <TouchableOpacity
                 onPress={() => {
-                  this.props.navigation.navigate("MatchDetail", item);
+                  this.handleSelectedMatch(item);
                 }}
               >
                 <CardMatch
