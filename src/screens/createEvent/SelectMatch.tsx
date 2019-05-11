@@ -62,7 +62,7 @@ export default class SelectMatch extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.divHeader}>
-          <HeaderMenu {...this.props} menu tituloTela="Selecione uma partida" />
+          <HeaderMenu {...this.props} back tituloTela="Selecione uma partida" />
         </View>
         <View style={styles.divContent}>
           <FlatList

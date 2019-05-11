@@ -11,6 +11,10 @@ import {
 import HeaderMenu from "../../components/HeaderMenu";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { NavigationInjectedProps } from "react-navigation";
+import DateTimePicker from "react-native-modal-datetime-picker";
+import moment from "moment";
+import api from "../../services/apiService";
+import { getToken } from "../../services/auth";
 
 export default class SelectHourEvent extends Component<
   NavigationInjectedProps
@@ -24,7 +28,11 @@ export default class SelectHourEvent extends Component<
   };
 
   state: { [key: string]: any } = {
-    matchSelected: null
+    matchSelected: null,
+    startDate: moment(),
+    endDate: moment(),
+    isDateTimePickerVisibleStart: false,
+    isDateTimePickerVisibleEnd: false
   };
 
   handleSelectMatch = () => {
@@ -34,17 +42,74 @@ export default class SelectHourEvent extends Component<
   };
 
   setMatch = (item: any) => {
-    this.setState({ matchSelected: item.selected }, () => {
-      console.log(this.state.matchSelected);
+    this.setState({ matchSelected: item.selected });
+  };
+
+  showDateTimePickerStart = () => {
+    this.setState({
+      isDateTimePickerVisibleStart: true
     });
+  };
+
+  hideDateTimePickerStart = () => {
+    this.setState({
+      isDateTimePickerVisibleStart: false
+    });
+  };
+
+  handleDatePickedStart = (date: Date) => {
+    this.setState({
+      startDate: date
+    });
+    this.hideDateTimePickerStart();
+  };
+
+  showDateTimePickerEnd = () => {
+    this.setState({
+      isDateTimePickerVisibleEnd: true
+    });
+  };
+
+  hideDateTimePickerEnd = () => {
+    this.setState({
+      isDateTimePickerVisibleEnd: false
+    });
+  };
+
+  handleDatePickedEnd = (date: Date) => {
+    this.setState({
+      endDate: date
+    });
+    this.hideDateTimePickerEnd();
+  };
+
+  handleSubmitForm = async () => {
+    const { matchSelected, startDate, endDate } = this.state;
+    const token = await getToken();
+    api
+      .post(
+        "/evento",
+        {
+          idPartida: matchSelected.id,
+          horaInicio: startDate,
+          horaFim: endDate,
+          descricao: "descricao nao tem na tela :("
+        },
+        {
+          headers: { token }
+        }
+      )
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(JSON.stringify(err));
+      });
   };
 
   render() {
     return (
       <View style={styles.container}>
-        {/* <View style={styles.divHeader}>
-          <HeaderMenu {...this.props} back tituloTela="Horário do evento" />
-        </View> */}
         <View style={styles.divContent}>
           <View style={styles.divSelectMatch}>
             <View style={styles.divTextSelectMatch}>
@@ -60,7 +125,7 @@ export default class SelectHourEvent extends Component<
                     style={{
                       fontSize: 22,
                       fontWeight: "bold",
-                      color: "#757575"
+                      color: "#38C08E"
                     }}
                   >
                     Escolha uma partida
@@ -69,14 +134,19 @@ export default class SelectHourEvent extends Component<
                     name="soccer"
                     style={{ marginLeft: 30 }}
                     size={20}
-                    color="#757575"
+                    color="#38C08E"
                   />
                 </TouchableOpacity>
               ) : (
                 <>
                   <TouchableOpacity
                     onPress={this.handleSelectMatch}
-                    style={{ flex: 1 }}
+                    style={{
+                      flex: 1,
+                      borderRadius: 4,
+                      borderWidth: 1,
+                      borderColor: "#38C08E"
+                    }}
                   >
                     <View style={styles.divImages}>
                       <Image
@@ -107,13 +177,62 @@ export default class SelectHourEvent extends Component<
             </View>
           </View>
           <View style={styles.divSelectHour}>
-            <Text>sd</Text>
+            <View style={styles.divBoxSelectHour}>
+              <View style={styles.divRegionHour}>
+                <Text style={styles.textTitleRegionHour}>Início do Evento</Text>
+                <TouchableOpacity
+                  style={styles.divSelectedHour}
+                  onPress={this.showDateTimePickerStart}
+                >
+                  <Text style={styles.textHourSelect}>
+                    {moment(this.state.startDate).format("LLLL")}
+                  </Text>
+                </TouchableOpacity>
+                <DateTimePicker
+                  mode={"datetime"}
+                  isVisible={this.state.isDateTimePickerVisibleStart}
+                  onConfirm={this.handleDatePickedStart}
+                  onCancel={this.hideDateTimePickerStart}
+                />
+              </View>
+            </View>
           </View>
-          <View style={styles.divInfoPub}>
-            <Text>sd</Text>
+          <View style={styles.divSelectHour}>
+            <View style={styles.divBoxSelectHour}>
+              <View style={styles.divRegionHour}>
+                <Text style={styles.textTitleRegionHour}>Fim do Evento</Text>
+                <TouchableOpacity
+                  style={styles.divSelectedHour}
+                  onPress={this.showDateTimePickerEnd}
+                >
+                  <Text style={styles.textHourSelect}>
+                    {moment(this.state.endDate).format("LLLL")}
+                  </Text>
+                </TouchableOpacity>
+                <DateTimePicker
+                  mode={"datetime"}
+                  isVisible={this.state.isDateTimePickerVisibleEnd}
+                  onConfirm={this.handleDatePickedEnd}
+                  onCancel={this.hideDateTimePickerEnd}
+                />
+              </View>
+            </View>
           </View>
           <View style={styles.divButtonArea}>
-            <Text>sd</Text>
+            <TouchableOpacity
+              style={styles.ButtonStyle}
+              activeOpacity={0.5}
+              onPress={this.handleSubmitForm}
+            >
+              <Text
+                style={{
+                  color: "#FFFFFF",
+                  paddingVertical: 10
+                }}
+              >
+                CADASTRAR EVENTO
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -156,7 +275,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 4,
     borderWidth: 1,
-    borderColor: "#AFAFAF"
+    borderColor: "#38C08E"
   },
   divImages: {
     flex: 1,
@@ -177,7 +296,8 @@ const styles = StyleSheet.create({
   divTextInfo: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 10
+    marginTop: 10,
+    marginBottom: 10
   },
   textInfo: {
     fontSize: 18,
@@ -187,19 +307,64 @@ const styles = StyleSheet.create({
   divSelectHour: {
     flex: 2,
     justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#3FBF3F"
+    alignItems: "center"
   },
-  divInfoPub: {
+  divBoxSelectHour: {
+    flex: 1,
+    flexDirection: "row",
+    marginLeft: 5,
+    marginRight: 5,
+    marginBottom: 10,
+    alignSelf: "stretch"
+  },
+  divRegionHour: {
+    flex: 1,
+    marginTop: 10,
+    marginBottom: 20,
+    alignSelf: "stretch",
+    alignItems: "flex-start"
+  },
+  textTitleRegionHour: {
     flex: 2,
+    fontSize: 15,
+    marginTop: 10,
+    marginLeft: 20,
+    fontWeight: "bold",
+    color: "#38C08E"
+  },
+  divSelectedHour: {
+    flex: 3,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#7F3FBF"
+    alignSelf: "stretch",
+    marginLeft: 20,
+    marginRight: 20,
+    borderWidth: 1,
+    borderRadius: 20,
+    borderColor: "#38C08E"
+  },
+  textHourSelect: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#38C08E"
   },
   divButtonArea: {
-    flex: 1.5,
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#3FBFBF"
+    marginBottom: 20
+  },
+  ButtonStyle: {
+    alignSelf: "stretch",
+    backgroundColor: "#38C08E",
+    borderWidth: 0,
+    color: "#FFFFFF",
+    borderColor: "transparent",
+    height: 40,
+    alignItems: "center",
+    borderRadius: 5,
+    marginLeft: 35,
+    marginRight: 35,
+    marginTop: 30
   }
 });

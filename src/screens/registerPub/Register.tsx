@@ -67,8 +67,6 @@ export default class Register extends Component<any, {}> {
         fotoPerfil,
         fotosEstabelecimento
       };
-      console.log(infoRegister);
-
       this.props.navigation.navigate("PerfilPicture", infoRegister);
     }
   };

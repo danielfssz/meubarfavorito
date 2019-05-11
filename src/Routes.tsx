@@ -24,7 +24,6 @@ import RegisteredSuccessfully from "./screens/registerPub/RegisteredSuccessfully
 
 import CreateEvent from "./screens/createEvent/CreateEvent";
 import SelectMatch from "./screens/createEvent/SelectMatch";
-import SelectHourEvent from "./screens/createEvent/SelectHourEvent";
 
 const { width } = Dimensions.get("window");
 
@@ -109,8 +108,7 @@ const switchRegisterNavigator = createSwitchNavigator({
 
 const createEventNavigator = createStackNavigator({
   CreateEvent,
-  SelectMatch,
-  SelectHourEvent
+  SelectMatch
 });
 
 const switchCreateEventNavigator = createSwitchNavigator({
