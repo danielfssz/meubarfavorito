@@ -8,7 +8,8 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   TouchableOpacity,
-  ScrollView
+  ScrollView, 
+  ActivityIndicator, 
 } from "react-native";
 import { Icon } from "react-native-elements";
 import HeaderMenu from "../../components/HeaderMenu";
@@ -22,7 +23,8 @@ export default class SignIn extends Component<any, {}> {
   state = {
     email: "",
     senha: "",
-    error: ""
+    error: "", 
+    finished: false, 
   };
 
   static navigationOptions = {
@@ -42,6 +44,7 @@ export default class SignIn extends Component<any, {}> {
         this.setState({ error: "" });
       }, 3000);
     } else {
+      this.setState({ finished: true });
       try {
         const { email, senha } = this.state;
         onSignIn({ email, senha })
@@ -149,21 +152,28 @@ export default class SignIn extends Component<any, {}> {
                   secureTextEntry
                 />
               </View>
-              <TouchableOpacity
-                style={styles.ButtonStyle}
-                activeOpacity={0.5}
-                onPress={this.handleSubmitLogin}
-              >
-                <Text
-                  style={{
-                    color: "#FFFFFF",
-                    paddingVertical: 10,
-                    fontSize: 16
-                  }}
+              {!this.state.finished ? (
+                <TouchableOpacity
+                  style={styles.ButtonStyle}
+                  activeOpacity={0.5}
+                  onPress={this.handleSubmitLogin}
                 >
-                  Entrar
-                </Text>
-              </TouchableOpacity>
+                  <Text
+                    style={{
+                      color: "#FFFFFF",
+                      paddingVertical: 10,
+                      fontSize: 16
+                    }}
+                  >
+                    Entrar
+                  </Text>
+                </TouchableOpacity>
+              ) : (
+                <>
+                  <Text>Efetuando login...</Text>
+                  <ActivityIndicator animating size="large" color="#38C08E" />
+                </>
+              )}
               {this.state.error.length !== 0 && (
                 <View style={styles.divError}>
                   <Text style={styles.textError}>{this.state.error}</Text>
