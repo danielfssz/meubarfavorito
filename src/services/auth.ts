@@ -8,9 +8,17 @@ export const onSignIn = (data: any) => {
     api
       .post("/login", data)
       .then(response => {
-        AsyncStorage.setItem(TOKEN_KEY, response.data.body.token).then(() => {
-          resolve(response);
-        });
+        const { code, body } = response.data;
+        if (code == 200 && body.token) {
+          AsyncStorage.setItem(TOKEN_KEY, response.data.body.token).then(() => {
+            resolve({ code, mensagem: "Logado" });
+          });
+        } else {
+          resolve({
+            code,
+            mensagem: body.mensagem
+          });
+        }
       })
       .catch(error => {
         reject(error);
