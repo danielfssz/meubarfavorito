@@ -88,9 +88,9 @@ export default class MatchDetail extends Component {
               {moment(matchDetail.dataHora).format("LLLL")}
             </Text>
           </View>
-          <View style={styles.divMatchViews}>
-            <Text style={styles.textInfoView}>
-              {matchDetail.views} visualizações
+          <View style={styles.divTitleListPub}>
+            <Text style={styles.titleListPub}>
+              Bares que irão transmitir essa partida:
             </Text>
           </View>
           <View style={styles.divListPubs}>
@@ -150,14 +150,20 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16
   },
-  divMatchViews: {
-    alignItems: "flex-end",
-    marginRight: 30,
-    marginTop: 10
+  divTitleListPub: {
+    alignItems: "center",
+    marginRight: 20,
+    marginLeft: 20,
+    marginTop: 10,
+    borderTopWidth: 1,
+    borderTopColor: "#ACACAC"
   },
-  textInfoView: {
+  titleListPub: {
+    marginTop: 8,
+    alignItems: "center",
     fontWeight: "bold",
-    fontSize: 16
+    fontSize: 16,
+    color: "#000"
   },
   divListPubs: {
     flex: 1,
