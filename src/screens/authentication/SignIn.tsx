@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-
 import {
   StyleSheet,
   TextInput,
@@ -8,7 +7,8 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
+  ActivityIndicator
 } from "react-native";
 import { Icon } from "react-native-elements";
 import HeaderMenu from "../../components/HeaderMenu";
@@ -22,7 +22,8 @@ export default class SignIn extends Component<any, {}> {
   state = {
     email: "",
     senha: "",
-    error: ""
+    error: null,
+    finished: false
   };
 
   static navigationOptions = {
@@ -42,37 +43,31 @@ export default class SignIn extends Component<any, {}> {
         this.setState({ error: "" });
       }, 3000);
     } else {
+      this.setState({ finished: true, error: null });
       try {
         const { email, senha } = this.state;
         onSignIn({ email, senha })
           .then((response: any) => {
-            if (response.data.code == 200) {
-              if (response.data.body.token) {
-                this.props.navigation.navigate("AreaLogada");
-              } else {
-                this.setState({
-                  error: "Erro ao recuperar token!"
-                });
-              }
+            const { code, mensagem } = response;
+
+            if (code === 200) {
+              this.props.navigation.navigate("AreaLogada");
+            } else if (code === 201) {
+              this.setState({ finished: false, error: mensagem });
             } else {
-              if (response.data.code == 201) {
-                this.setState({
-                  error: "Registro ou senha inválidos!"
-                });
-              } else {
-                this.setState({ error: "Erro ao realizar login!" });
-              }
+              this.setState({ finished: false, error: mensagem });
             }
           })
           .catch(error => {
-            console.log(error);
             this.setState({
+              finished: false,
               error:
                 "Houve um problema com o login, verifique suas credenciais!"
             });
           });
       } catch (_err) {
         this.setState({
+          finished: false,
           error: "Houve um problema com o login, verifique suas credenciais!"
         });
       }
@@ -112,13 +107,7 @@ export default class SignIn extends Component<any, {}> {
                   autoCapitalize="sentences"
                   keyboardType="email-address"
                   value={this.state.email}
-                  // ref={ref => {
-                  //   this._emailinput = ref;
-                  // }}
                   returnKeyType="next"
-                  // onSubmitEditing={() =>
-                  //   this._ageinput && this._ageinput.focus()
-                  // }
                   blurOnSubmit={false}
                 />
               </View>
@@ -140,31 +129,35 @@ export default class SignIn extends Component<any, {}> {
                   placeholderTextColor="#413E4F"
                   autoCapitalize="sentences"
                   value={this.state.senha}
-                  // ref={ref => {
-                  // this._addressinput = ref;
-                  // }}
                   returnKeyType="send"
                   onSubmitEditing={Keyboard.dismiss}
                   blurOnSubmit={false}
                   secureTextEntry
                 />
               </View>
-              <TouchableOpacity
-                style={styles.ButtonStyle}
-                activeOpacity={0.5}
-                onPress={this.handleSubmitLogin}
-              >
-                <Text
-                  style={{
-                    color: "#FFFFFF",
-                    paddingVertical: 10,
-                    fontSize: 16
-                  }}
+              {!this.state.finished ? (
+                <TouchableOpacity
+                  style={styles.ButtonStyle}
+                  activeOpacity={0.5}
+                  onPress={this.handleSubmitLogin}
                 >
-                  Entrar
-                </Text>
-              </TouchableOpacity>
-              {this.state.error.length !== 0 && (
+                  <Text
+                    style={{
+                      color: "#FFFFFF",
+                      paddingVertical: 10,
+                      fontSize: 16
+                    }}
+                  >
+                    Entrar
+                  </Text>
+                </TouchableOpacity>
+              ) : (
+                <View style={styles.divLoading}>
+                  <Text style={styles.text}>Efetuando login...</Text>
+                  <ActivityIndicator animating size="large" color="#38C08E" />
+                </View>
+              )}
+              {this.state.error && (
                 <View style={styles.divError}>
                   <Text style={styles.textError}>{this.state.error}</Text>
                 </View>
@@ -207,5 +200,15 @@ const styles = StyleSheet.create({
     fontFamily: "Hebbo",
     fontSize: 15,
     color: "#EA2323"
+  },
+  divLoading: {
+    flexDirection: "row",
+    justifyContent: "space-around"
+  },
+  text: {
+    color: "#38C08E",
+    fontSize: 20,
+    textAlign: "center",
+    paddingTop: 20
   }
 });
