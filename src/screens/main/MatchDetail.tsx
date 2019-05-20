@@ -102,7 +102,7 @@ export default class MatchDetail extends Component {
                   onPress={() => {
                     this.props.navigation.navigate(
                       "EventDetail",
-                      this.state.matchDetail
+                      item
                     );
                   }}
                 >

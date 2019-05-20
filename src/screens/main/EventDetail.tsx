@@ -47,15 +47,8 @@ export default class EventDetail extends Component {
   };
 
   componentDidMount() {
-    this.setState(
-      {
-        eventDetail: this.props.navigation.state.params
-      },
-      () => {
-        console.log(this.props.navigation.state.params);
-        this.getEventos();
-      }
-    );
+    console.log(this.props.navigation.state.params);
+    this.getEventos();
   }
 
   render() {
@@ -67,9 +60,9 @@ export default class EventDetail extends Component {
           </View>
 
           <View style={styles.divEventDetail}>
-            <Text style={styles.textNamePub}>Nome do Bar</Text>
+            <Text style={styles.textNamePub}>Nome do Estabelecimento</Text>
             <Text style={styles.textInfoAddress}>
-              Endereço: Av das Nações Unidae
+              Endereço: Av das Nações Unidas
             </Text>
             <Text style={styles.textInfoAddress}>Telefone</Text>
           </View>
