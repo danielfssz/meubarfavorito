@@ -100,7 +100,10 @@ export default class MatchDetail extends Component {
               renderItem={({ item }: any) => (
                 <TouchableOpacity
                   onPress={() => {
-                    alert("sd");
+                    this.props.navigation.navigate(
+                      "EventDetail",
+                      this.state.matchDetail
+                    );
                   }}
                 >
                   <CardPub
