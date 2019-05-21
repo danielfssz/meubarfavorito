@@ -30,7 +30,7 @@ export default class EventDetail extends Component {
   };
 
   state: { [key: string]: any } = {
-    eventDetail: null,
+    eventDetail: this.props.navigation.state.params,
     listPubs: []
   };
 
@@ -49,6 +49,7 @@ export default class EventDetail extends Component {
   componentDidMount() {
     console.log(this.props.navigation.state.params);
     this.getEventos();
+    console.log(this.state.listPubs)
   }
 
   render() {
@@ -60,9 +61,9 @@ export default class EventDetail extends Component {
           </View>
 
           <View style={styles.divEventDetail}>
-            <Text style={styles.textNamePub}>Nome do Estabelecimento</Text>
+            <Text style={styles.textNamePub}>{ this.state.eventDetail.nomeEstabelecimento }</Text>
             <Text style={styles.textInfoAddress}>
-              Endereço: Av das Nações Unidas
+              Endereço: { this.state.eventDetail.enderecoEstabelecimento }
             </Text>
             <Text style={styles.textInfoAddress}>Telefone</Text>
           </View>
