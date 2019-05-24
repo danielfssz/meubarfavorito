@@ -47,9 +47,7 @@ export default class EventDetail extends Component {
   };
 
   componentDidMount() {
-    console.log(this.props.navigation.state.params);
     this.getEventos();
-    console.log(this.state.listPubs)
   }
 
   render() {
@@ -61,11 +59,11 @@ export default class EventDetail extends Component {
           </View>
 
           <View style={styles.divEventDetail}>
-            <Text style={styles.textNamePub}>{ this.state.eventDetail.nomeEstabelecimento }</Text>
+            <Text style={styles.textNamePub}>{ this.state.listPubs.nomeEstabelecimento }</Text>
             <Text style={styles.textInfoAddress}>
-              Endereço: { this.state.eventDetail.enderecoEstabelecimento }
+              Endereço: { this.state.listPubs.enderecoEstabelecimento }
             </Text>
-            <Text style={styles.textInfoAddress}>Telefone</Text>
+            <Text style={styles.textInfoAddress}>Telefone: { this.state.listPubs.telefone }</Text>
           </View>
         </View>
         <View style={styles.divOthers}>
