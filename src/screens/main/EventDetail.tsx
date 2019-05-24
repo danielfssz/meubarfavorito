@@ -30,16 +30,16 @@ export default class EventDetail extends Component {
   };
 
   state: { [key: string]: any } = {
-    eventDetail: this.props.navigation.state.params,
-    listPubs: []
+    eventListItem: this.props.navigation.state.params,
+    event: []
   };
 
   getEventos = async () => {
     api
-      .get("/evento/" + this.state.eventDetail.id)
+      .get("/evento/" + this.state.eventListItem.id)
       .then(data => {
         console.log(data);
-        this.setState({ listPubs: data.data });
+        this.setState({ event: data.data });
       })
       .catch(error => {
         console.log(error);
@@ -59,11 +59,11 @@ export default class EventDetail extends Component {
           </View>
 
           <View style={styles.divEventDetail}>
-            <Text style={styles.textNamePub}>{ this.state.listPubs.nomeEstabelecimento }</Text>
+            <Text style={styles.textNamePub}>{ this.state.event.nomeEstabelecimento }</Text>
             <Text style={styles.textInfoAddress}>
-              Endereço: { this.state.listPubs.enderecoEstabelecimento }
+              Endereço: { this.state.event.enderecoEstabelecimento }
             </Text>
-            <Text style={styles.textInfoAddress}>Telefone: { this.state.listPubs.telefone }</Text>
+            <Text style={styles.textInfoAddress}>Telefone: { this.state.event.telefone }</Text>
           </View>
         </View>
         <View style={styles.divOthers}>
