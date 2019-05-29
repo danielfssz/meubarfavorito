@@ -1,17 +1,16 @@
 import React, { Component } from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  FlatList
-} from "react-native";
+import { Text, View, StyleSheet, Dimensions } from "react-native";
 import moment from "moment";
 import "moment/locale/pt-br";
-
-import CardPub from "../../components/CardPub";
 import api from "../../services/apiService";
+import Carousel from "react-native-snap-carousel";
+
+const horizontalMargin = 20;
+const slideWidth = 280;
+
+const sliderWidth = Dimensions.get("window").width;
+const itemWidth = slideWidth + horizontalMargin * 2;
+const itemHeight = 200;
 
 export default class EventDetail extends Component {
   public props: any;
@@ -31,7 +30,8 @@ export default class EventDetail extends Component {
 
   state: { [key: string]: any } = {
     eventListItem: this.props.navigation.state.params,
-    event: []
+    event: [],
+    entries: [{ title: "teste"},{ title: "teste2" }]
   };
 
   getEventos = async () => {
@@ -50,20 +50,39 @@ export default class EventDetail extends Component {
     this.getEventos();
   }
 
+  _renderItem({ item, index }: { item: any; index: any }) {
+    return (
+      <View style={{ flex: 1, backgroundColor: "#443212" }}>
+        <Text style={{ flex: 1 }}>{item.title}</Text>
+      </View>
+    );
+  }
+
+  
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.divContent}>
           <View style={styles.divCarrousel}>
-            <Text>Carousel</Text>
+            <Carousel
+              layout={"default"}
+              renderItem={this._renderItem}
+              sliderWidth={sliderWidth}
+              itemWidth={itemWidth}
+              data={this.state.entries}
+            />
           </View>
 
           <View style={styles.divEventDetail}>
-            <Text style={styles.textNamePub}>{ this.state.event.nomeEstabelecimento }</Text>
-            <Text style={styles.textInfoAddress}>
-              Endereço: { this.state.event.enderecoEstabelecimento }
+            <Text style={styles.textNamePub}>
+              {this.state.event.nomeEstabelecimento}
             </Text>
-            <Text style={styles.textInfoAddress}>Telefone: { this.state.event.telefone }</Text>
+            <Text style={styles.textInfoAddress}>
+              Endereço: {this.state.event.enderecoEstabelecimento}
+            </Text>
+            <Text style={styles.textInfoAddress}>
+              Telefone: {this.state.event.telefone}
+            </Text>
           </View>
         </View>
         <View style={styles.divOthers}>
@@ -99,5 +118,16 @@ const styles = StyleSheet.create({
   },
   divOthers: {
     flex: 6 // Somar
+  },
+  slide: {
+    width: itemWidth,
+    height: itemHeight,
+    paddingHorizontal: horizontalMargin
+    // other styles for the item container
+  },
+  slideInnerContainer: {
+    width: slideWidth,
+    flex: 1
+    // other styles for the inner container
   }
 });
