@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, StyleSheet, Dimensions } from "react-native";
+import { Text, View, StyleSheet, Dimensions, Image } from "react-native";
 import moment from "moment";
 import "moment/locale/pt-br";
 import api from "../../services/apiService";
@@ -30,8 +30,7 @@ export default class EventDetail extends Component {
 
   state: { [key: string]: any } = {
     eventListItem: this.props.navigation.state.params,
-    event: [],
-    entries: [{ title: "teste"},{ title: "teste2" }]
+    event: []
   };
 
   getEventos = async () => {
@@ -52,13 +51,21 @@ export default class EventDetail extends Component {
 
   _renderItem({ item, index }: { item: any; index: any }) {
     return (
-      <View style={{ flex: 1, backgroundColor: "#443212" }}>
-        <Text style={{ flex: 1 }}>{item.title}</Text>
+      <View style={{ flex: 1 }}>
+        {/* <Text style={{ flex: 1 }}>{item.title}</Text> */}
+        <Image
+          style={{ flex: 1 }}
+          source={{
+            //temporario
+            uri: `data:image/png;base64,${item}`
+            // definitivo
+            // uri: item
+          }}
+        />
       </View>
     );
   }
 
-  
   render() {
     return (
       <View style={styles.container}>
@@ -69,7 +76,7 @@ export default class EventDetail extends Component {
               renderItem={this._renderItem}
               sliderWidth={sliderWidth}
               itemWidth={itemWidth}
-              data={this.state.entries}
+              data={this.state.event.fotosEstabelecimento}
             />
           </View>
 
@@ -85,8 +92,8 @@ export default class EventDetail extends Component {
             </Text>
           </View>
         </View>
-        <View style={styles.divOthers}>
-          <Text>Outras coisasss</Text>
+        <View style={styles.divEventDetail}>
+          <Text>Promoções:</Text>
         </View>
       </View>
     );
@@ -97,15 +104,13 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   divContent: { flex: 12 },
   divCarrousel: {
-    flex: 4, // Somar
-    backgroundColor: "#38C08E"
+    flex: 4 // Somar
   },
   divEventDetail: {
     flex: 2, // Somar
-    paddingLeft: 30,
+    paddingLeft: 20,
     paddingTop: 15,
-    alignItems: "flex-start",
-    backgroundColor: "#abc"
+    alignItems: "flex-start"
   },
   textNamePub: {
     color: "#000",
