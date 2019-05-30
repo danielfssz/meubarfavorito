@@ -1,9 +1,15 @@
 import React, { Component } from "react";
-import { View, StyleSheet, FlatList, Text, ActivityIndicator, Alert } from "react-native";
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  Text,
+  ActivityIndicator,
+  Alert
+} from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Icon } from "react-native-elements";
 import moment from "moment";
-// import "moment/locale/pt-br";
 
 import CardMatch from "../../components/CardMatch";
 import api from "../../services/apiService";
@@ -14,7 +20,6 @@ export default class Main extends Component {
 
   constructor(props: any) {
     super(props);
-    // moment.locale("pt-BR");
   }
 
   static navigationOptions = {
@@ -28,7 +33,8 @@ export default class Main extends Component {
 
   state = {
     partidas: null,
-    loaded: false
+    loaded: false,
+    error: null
   };
 
   _isMounted = false;
@@ -45,7 +51,8 @@ export default class Main extends Component {
         }
       })
       .catch(error => {
-        console.log(error);
+        this.setState({ error: "Erro ao recuperar as partidas" });
+        this.setState({ loaded: true });
       });
   }
 
@@ -85,7 +92,17 @@ export default class Main extends Component {
           ) : (
             <View style={styles.divLoading}>
               <Text style={styles.text}>Buscando partidas...</Text>
-              <ActivityIndicator style={styles.activityIndicator} animating size="large" color="#38C08E" />
+              <ActivityIndicator
+                style={styles.activityIndicator}
+                animating
+                size="large"
+                color="#38C08E"
+              />
+            </View>
+          )}
+          {this.state.error && (
+            <View style={styles.divError}>
+              <Text style={styles.textError}>{this.state.error}</Text>
             </View>
           )}
         </View>
@@ -108,7 +125,17 @@ const styles = StyleSheet.create({
     textAlign: "center",
     paddingTop: 20
   },
-  activityIndicator:{
+  activityIndicator: {
     marginTop: 20
+  },
+  divError: {
+    flex: 1,
+    alignItems: "center",
+    paddingTop: 20
+  },
+  textError: {
+    fontFamily: "Hebbo",
+    fontSize: 15,
+    color: "#EA2323"
   }
 });
