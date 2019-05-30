@@ -5,7 +5,8 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  FlatList
+  FlatList,
+  ActivityIndicator
 } from "react-native";
 import moment from "moment";
 import "moment/locale/pt-br";
@@ -31,14 +32,15 @@ export default class MatchDetail extends Component {
 
   state: { [key: string]: any } = {
     matchDetail: [],
-    listPubs: []
+    listPubs: [],
+    loaded: false
   };
 
   getEventos = async () => {
     api
       .get("/partida/" + this.state.matchDetail.id + "/evento")
       .then(data => {
-        this.setState({ listPubs: data.data });
+        this.setState({ loaded: true, listPubs: data.data });
       })
       .catch(error => {
         console.log(error);
@@ -88,30 +90,56 @@ export default class MatchDetail extends Component {
               {moment(matchDetail.dataHora).format("LLLL")}
             </Text>
           </View>
-          <View style={styles.divTitleListPub}>
-            <Text style={styles.titleListPub}>
-              Bares que irão transmitir essa partida:
-            </Text>
-          </View>
-          <View style={styles.divListPubs}>
-            <FlatList
-              keyExtractor={(item, index) => index.toString()}
-              data={this.state.listPubs}
-              renderItem={({ item }: any) => (
-                <TouchableOpacity
-                  onPress={() => {
-                    alert("sd");
-                  }}
-                >
-                  <CardPub
-                    nomeEstabelecimento={item.nomeEstabelecimento}
-                    enderecoEstabelecimento={item.enderecoEstabelecimento}
-                    imagemEstabelecimento={item.imagemEstabelecimento}
-                  />
-                </TouchableOpacity>
-              )}
-            />
-          </View>
+          {!this.state.loaded ? (
+            <View style={styles.divLoading}>
+              <Text style={styles.text}>Buscando os bares...</Text>
+              <ActivityIndicator
+                style={styles.activityIndicator}
+                animating
+                size="large"
+                color="#38C08E"
+              />
+            </View>
+          ) : this.state.listPubs.length > 0 ? (
+            <>
+              <View style={styles.divTitleListPub}>
+                <Text style={styles.titleListPub}>
+                  Bares que irão transmitir essa partida:
+                </Text>
+              </View>
+              <View style={styles.divListPubs}>
+                <FlatList
+                  keyExtractor={(item, index) => index.toString()}
+                  data={this.state.listPubs}
+                  renderItem={({ item }: any) => (
+                    <TouchableOpacity
+                      onPress={() => {
+                        alert("sd");
+                      }}
+                    >
+                      <CardPub
+                        nomeEstabelecimento={item.nomeEstabelecimento}
+                        enderecoEstabelecimento={item.enderecoEstabelecimento}
+                        imagemEstabelecimento={item.imagemEstabelecimento}
+                      />
+                    </TouchableOpacity>
+                  )}
+                />
+              </View>
+            </>
+          ) : (
+            <View
+              style={{
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center"
+              }}
+            >
+              <Text style={styles.text}>
+                Até o momento nenhum bar irá transimitir esse jogo :(
+              </Text>
+            </View>
+          )}
         </View>
       </View>
     );
@@ -120,7 +148,7 @@ export default class MatchDetail extends Component {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  divHeader: { flex: 1, backgroundColor: "#38C08E" },
+  divHeader: { flex: 1, backgroundColor: "#38C08E", paddingBottom: 15 },
   divContent: { flex: 4, marginTop: 17 },
   divImages: {
     flex: 1,
@@ -168,5 +196,18 @@ const styles = StyleSheet.create({
   divListPubs: {
     flex: 1,
     marginTop: 13
+  },
+  divLoading: {
+    flexDirection: "column",
+    justifyContent: "space-around"
+  },
+  text: {
+    color: "#38C08E",
+    fontSize: 18,
+    textAlign: "center",
+    paddingTop: 20
+  },
+  activityIndicator: {
+    marginTop: 20
   }
 });
