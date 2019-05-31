@@ -14,7 +14,7 @@ export default class PerfilPicture extends Component<NavigationInjectedProps> {
   };
 
   state: { [key: string]: any } = {
-    pickedImage: {},
+    pickedImage: null,
     infoRegister: {}
   };
 
@@ -34,7 +34,7 @@ export default class PerfilPicture extends Component<NavigationInjectedProps> {
       includeBase64: true
     }).then((res: any) => {
       this.setState({
-        pickedImage: res
+        pickedImage: `data:${res.mime};base64,${res.data}`
       });
 
       const newInfoRegister = Object.assign({}, this.state.infoRegister);
@@ -64,9 +64,7 @@ export default class PerfilPicture extends Component<NavigationInjectedProps> {
             <View style={styles.previewImage}>
               <Image
                 source={{
-                  uri: `data:${this.state.pickedImage.mime};base64,${
-                    this.state.pickedImage.data
-                  }`
+                  uri: this.state.pickedImage
                 }}
                 style={styles.previewImage}
               />

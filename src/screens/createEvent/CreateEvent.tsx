@@ -6,7 +6,9 @@ import {
   Button,
   Image,
   TouchableOpacity,
-  ViewProps
+  ViewProps,
+  ActivityIndicator,
+  Alert
 } from "react-native";
 import HeaderMenu from "../../components/HeaderMenu";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -15,7 +17,7 @@ import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from "moment";
 import api from "../../services/apiService";
 import { getToken } from "../../services/auth";
-
+import RF from "react-native-responsive-fontsize";
 export default class SelectHourEvent extends Component<
   NavigationInjectedProps
 > {
@@ -32,7 +34,9 @@ export default class SelectHourEvent extends Component<
     startDate: moment(),
     endDate: moment(),
     isDateTimePickerVisibleStart: false,
-    isDateTimePickerVisibleEnd: false
+    isDateTimePickerVisibleEnd: false,
+    loaded: false,
+    error: null
   };
 
   handleSelectMatch = () => {
@@ -42,7 +46,12 @@ export default class SelectHourEvent extends Component<
   };
 
   setMatch = (item: any) => {
-    this.setState({ matchSelected: item.selected });
+    this.setState({
+      matchSelected: item.selected,
+      startDate: moment(item.selected.dataHora).subtract(1, "hours"),
+      endDate: moment(item.selected.dataHora).add(2.5, "hours")
+    });
+    this.cleanError();
   };
 
   showDateTimePickerStart = () => {
@@ -74,6 +83,7 @@ export default class SelectHourEvent extends Component<
     this.setState({
       isDateTimePickerVisibleEnd: false
     });
+    this.cleanError();
   };
 
   handleDatePickedEnd = (date: Date) => {
@@ -81,9 +91,17 @@ export default class SelectHourEvent extends Component<
       endDate: date
     });
     this.hideDateTimePickerEnd();
+    this.cleanError();
+  };
+
+  cleanError = () => {
+    this.setState({
+      error: null
+    });
   };
 
   handleSubmitForm = async () => {
+    this.setState({ loaded: true });
     const { matchSelected, startDate, endDate } = this.state;
     const token = await getToken();
     api
@@ -99,11 +117,50 @@ export default class SelectHourEvent extends Component<
           headers: { token }
         }
       )
-      .then(res => {
-        console.log(res);
+      .then(res => {        
+        if (res.data.code === 200) {
+          Alert.alert(
+            "Cadastro de evento",
+            "Evento cadastrado com sucesso!",
+            [
+              {
+                text: "OK",
+                onPress: () => {
+                  this.props.navigation.navigate("mainNavigation");
+                }
+              }
+            ],
+            { cancelable: false }
+          );
+        } else {
+          Alert.alert(
+            "Cadastro de evento",
+            "Algum problema ocorreu durante o cadastro, tente novamente.",
+            [
+              {
+                text: "OK",
+                onPress: () => {
+                  this.setState({ loaded: false });
+                }
+              }
+            ],
+            { cancelable: false }
+          );
+        }
       })
-      .catch(err => {
-        console.log(JSON.stringify(err));
+      .catch(_ => {
+        const error = _.response.data;
+        if (error.code === 409) {
+          this.setState({
+            error: "Evento já cadastrado para essa partida.",
+            loaded: false
+          });
+        } else {
+          this.setState({
+            error: "Erro ao cadastrar evento!",
+            loaded: false
+          });
+        }
       });
   };
 
@@ -145,7 +202,8 @@ export default class SelectHourEvent extends Component<
                       flex: 1,
                       borderRadius: 4,
                       borderWidth: 1,
-                      borderColor: "#38C08E"
+                      borderColor: "#38C08E",
+                      paddingTop: 20
                     }}
                   >
                     <View style={styles.divImages}>
@@ -219,20 +277,44 @@ export default class SelectHourEvent extends Component<
             </View>
           </View>
           <View style={styles.divButtonArea}>
-            <TouchableOpacity
-              style={styles.ButtonStyle}
-              activeOpacity={0.5}
-              onPress={this.handleSubmitForm}
-            >
-              <Text
-                style={{
-                  color: "#FFFFFF",
-                  paddingVertical: 10
-                }}
-              >
-                CADASTRAR EVENTO
-              </Text>
-            </TouchableOpacity>
+            {!this.state.error ? (
+              <>
+                {!this.state.loaded ? (
+                  <TouchableOpacity
+                    style={styles.ButtonStyle}
+                    activeOpacity={0.5}
+                    onPress={this.handleSubmitForm}
+                  >
+                    <Text
+                      style={{
+                        color: "#FFFFFF",
+                        paddingVertical: 10
+                      }}
+                    >
+                      CADASTRAR EVENTO
+                    </Text>
+                  </TouchableOpacity>
+                ) : (
+                  <View style={styles.divLoading}>
+                    <Text style={styles.text}>Cadastrando evento...</Text>
+                    <ActivityIndicator
+                      style={styles.activityIndicator}
+                      animating
+                      size="large"
+                      color="#38C08E"
+                    />
+                  </View>
+                )}
+              </>
+            ) : (
+              <>
+                {this.state.error && (
+                  <View style={styles.divError}>
+                    <Text style={styles.textError}>{this.state.error}</Text>
+                  </View>
+                )}
+              </>
+            )}
           </View>
         </View>
       </View>
@@ -344,7 +426,7 @@ const styles = StyleSheet.create({
     borderColor: "#38C08E"
   },
   textHourSelect: {
-    fontSize: 18,
+    fontSize: RF(2.6),
     fontWeight: "bold",
     color: "#38C08E"
   },
@@ -366,5 +448,28 @@ const styles = StyleSheet.create({
     marginLeft: 35,
     marginRight: 35,
     marginTop: 30
+  },
+  divLoading: {
+    flexDirection: "row",
+    justifyContent: "space-around"
+  },
+  text: {
+    color: "#38C08E",
+    fontSize: 18,
+    textAlign: "center",
+    paddingTop: 8
+  },
+  activityIndicator: {
+    marginLeft: 20
+  },
+  divError: {
+    flex: 1,
+    alignItems: "center",
+    paddingTop: 20
+  },
+  textError: {
+    fontFamily: "Hebbo",
+    fontSize: 15,
+    color: "#EA2323"
   }
 });
