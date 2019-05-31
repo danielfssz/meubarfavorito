@@ -57,7 +57,7 @@ export default class PubPictures extends Component<NavigationInjectedProps> {
 
     this.state.pickedImages.forEach((item: any) => {
       if (item === undefined) return;
-      newInfoRegister.fotosEstabelecimento.push(item.data);
+      newInfoRegister.fotosEstabelecimento.push(`data:${item.mime};base64,${item.data}`);
     });
 
     await this.setState({
@@ -89,6 +89,7 @@ export default class PubPictures extends Component<NavigationInjectedProps> {
           fotoPerfil,
           fotosEstabelecimento
         } = this.state.infoRegister;
+
         api
           .post("/estabelecimento", {
             nome,
