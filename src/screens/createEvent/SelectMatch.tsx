@@ -3,7 +3,6 @@ import { View, StyleSheet, FlatList } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Icon } from "react-native-elements";
 import moment from "moment";
-// import "moment/locale/pt-br";
 
 import CardMatch from "../../components/CardMatch";
 import api from "../../services/apiService";
@@ -13,8 +12,7 @@ export default class SelectMatch extends Component {
   public props: any;
 
   constructor(props: any) {
-    super(props);
-    // moment.locale("pt-BR");
+    super(props);    
   }
 
   static navigationOptions = {
@@ -95,5 +93,5 @@ export default class SelectMatch extends Component {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   divHeader: { flex: 1 },
-  divContent: { flex: 8 }
+  divContent: { flex: 8, marginTop: 8 }
 });
