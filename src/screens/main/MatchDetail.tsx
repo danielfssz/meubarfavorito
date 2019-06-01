@@ -120,7 +120,7 @@ export default class MatchDetail extends Component {
                       <CardPub
                         nomeEstabelecimento={item.nomeEstabelecimento}
                         enderecoEstabelecimento={item.enderecoEstabelecimento}
-                        imagemEstabelecimento={item.imagemEstabelecimento}
+                        fotoPerfil={item.fotoPerfil}
                       />
                     </TouchableOpacity>
                   )}

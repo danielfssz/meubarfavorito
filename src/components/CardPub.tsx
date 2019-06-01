@@ -5,14 +5,7 @@ const CardMatch = (props: any) => {
   return (
     <View style={styles.container}>
       <View style={styles.divImagePub}>
-        <Image
-          style={styles.imagePub}
-          source={{
-            // uri: props.imagePub
-            uri:
-              "https://static.vecteezy.com/system/resources/previews/000/061/183/original/bar-logo-vector.jpg"
-          }}
-        />
+        <Image style={styles.imagePub} source={{ uri: props.fotoPerfil }} />
       </View>
       <View style={styles.divContent}>
         <View style={styles.divInformation}>
