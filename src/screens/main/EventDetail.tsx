@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { Text, View, StyleSheet, Dimensions, Image } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Dimensions,
+  Image,
+  ActivityIndicator
+} from "react-native";
 import moment from "moment";
 import "moment/locale/pt-br";
 import api from "../../services/apiService";
@@ -22,22 +29,21 @@ export default class EventDetail extends Component {
 
   static navigationOptions = {
     headerStyle: {
-      backgroundColor: "#FFF",
+      backgroundColor: "#38C08E",
       elevation: 0
     },
-    headerTintColor: "#000"
+    headerTintColor: "#FFF"
   };
 
   state: { [key: string]: any } = {
     eventListItem: this.props.navigation.state.params,
-    event: []
+    event: null
   };
 
   getEventos = async () => {
     api
-      .get("/evento/" + this.state.eventListItem.id)
+      .get(`/evento/${this.state.eventListItem.id}`)
       .then(data => {
-        console.log(data);
         this.setState({ event: data.data });
       })
       .catch(error => {
@@ -52,16 +58,7 @@ export default class EventDetail extends Component {
   _renderItem({ item, index }: { item: any; index: any }) {
     return (
       <View style={{ flex: 1 }}>
-        {/* <Text style={{ flex: 1 }}>{item.title}</Text> */}
-        <Image
-          style={{ flex: 1 }}
-          source={{
-            //temporario
-            uri: `data:image/png;base64,${item}`
-            // definitivo
-            // uri: item
-          }}
-        />
+        <Image style={{ flex: 1 }} source={{ uri: item }} />
       </View>
     );
   }
@@ -71,29 +68,77 @@ export default class EventDetail extends Component {
       <View style={styles.container}>
         <View style={styles.divContent}>
           <View style={styles.divCarrousel}>
-            <Carousel
-              layout={"default"}
-              renderItem={this._renderItem}
-              sliderWidth={sliderWidth}
-              itemWidth={itemWidth}
-              data={this.state.event.fotosEstabelecimento}
-            />
+            {this.state.event ? (
+              <Carousel
+                layout={"default"}
+                renderItem={this._renderItem}
+                sliderWidth={sliderWidth}
+                itemWidth={itemWidth}
+                data={this.state.event.fotosEstabelecimento}
+              />
+            ) : (
+              <View
+                style={[
+                  styles.divLoading,
+                  { flexDirection: "column", justifyContent: "flex-start" }
+                ]}
+              >
+                <Text style={styles.text}>
+                  Carregando as informações do estabelecimento...
+                </Text>
+                <ActivityIndicator
+                  style={{ marginTop: 20 }}
+                  animating
+                  size="large"
+                  color="#38C08E"
+                />
+              </View>
+            )}
           </View>
-
           <View style={styles.divEventDetail}>
-            <Text style={styles.textNamePub}>
-              {this.state.event.nomeEstabelecimento}
-            </Text>
-            <Text style={styles.textInfoAddress}>
-              Endereço: {this.state.event.enderecoEstabelecimento}
-            </Text>
-            <Text style={styles.textInfoAddress}>
-              Telefone: {this.state.event.telefone}
-            </Text>
+            {this.state.event ? (
+              <View style={{ alignItems: "flex-start", paddingLeft: 20 }}>
+                <Text style={styles.textNamePub}>
+                  {this.state.event.nomeEstabelecimento}
+                </Text>
+                <Text style={styles.textInfoAddress}>
+                  Endereço: {this.state.event.enderecoEstabelecimento}
+                </Text>
+                <Text style={styles.textInfoAddress}>
+                  Telefone: {this.state.event.telefone}
+                </Text>
+              </View>
+            ) : (
+              <View
+                style={[
+                  styles.divLoading,
+                  { alignItems: "center", justifyContent: "center" }
+                ]}
+              >
+                <ActivityIndicator animating size="large" color="#38C08E" />
+              </View>
+            )}
           </View>
         </View>
-        <View style={styles.divEventDetail}>
-          <Text>Promoções:</Text>
+
+        <View style={styles.divEventPromo}>
+          {this.state.event ? (
+            <View style={{ alignItems: "flex-start", paddingLeft: 20 }}>
+              <Text style={styles.textTitlePromo}>Promoções:</Text>
+              <Text style={styles.textPromo}>
+                {this.state.event.descricaoPromocao}
+              </Text>
+            </View>
+          ) : (
+            <View
+              style={[
+                styles.divLoading,
+                { alignItems: "center", justifyContent: "center" }
+              ]}
+            >
+              <ActivityIndicator animating size="large" color="#38C08E" />
+            </View>
+          )}
         </View>
       </View>
     );
@@ -101,16 +146,19 @@ export default class EventDetail extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1, backgroundColor: "#fff" },
   divContent: { flex: 12 },
   divCarrousel: {
-    flex: 4 // Somar
+    flex: 4, // Somar
+    // backgroundColor: "#38C08E",
+    margin: 5,
+    borderRadius: 3
   },
   divEventDetail: {
     flex: 2, // Somar
-    paddingLeft: 20,
-    paddingTop: 15,
-    alignItems: "flex-start"
+    margin: 5,
+    borderRadius: 3,
+    paddingTop: 15
   },
   textNamePub: {
     color: "#000",
@@ -119,20 +167,43 @@ const styles = StyleSheet.create({
   },
   textInfoAddress: {
     fontWeight: "bold",
-    fontSize: 16
+    fontSize: 16,
+    color: "#939393",
+    marginTop: 5
   },
-  divOthers: {
-    flex: 6 // Somar
+  divEventPromo: {
+    flex: 6, // Somar
+    margin: 5,
+    borderRadius: 3
   },
   slide: {
     width: itemWidth,
     height: itemHeight,
     paddingHorizontal: horizontalMargin
-    // other styles for the item container
   },
   slideInnerContainer: {
     width: slideWidth,
     flex: 1
-    // other styles for the inner container
+  },
+  divLoading: {
+    flex: 1
+  },
+  text: {
+    color: "#38C08E",
+    fontSize: 20,
+    textAlign: "center",
+    paddingTop: 20
+  },
+  textTitlePromo: {
+    color: "#000",
+    fontWeight: "bold",
+    fontSize: 22,
+    padding: 5
+  },
+  textPromo: {
+    fontWeight: "bold",
+    fontSize: 16,
+    color: "#939393",
+    marginTop: 5
   }
 });
