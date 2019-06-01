@@ -197,13 +197,12 @@ const styles = StyleSheet.create({
   textTitlePromo: {
     color: "#000",
     fontWeight: "bold",
-    fontSize: 22,
-    padding: 5
+    fontSize: 22
   },
   textPromo: {
     fontWeight: "bold",
     fontSize: 16,
     color: "#939393",
-    marginTop: 5
+    marginTop: 7.5
   }
 });
