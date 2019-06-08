@@ -24,15 +24,15 @@ export default class Register extends Component<any, {}> {
 
   state = {
     error: "",
-    nome: "Bar do Elifas",
-    descricao: "Barzinho do Elifas pra galera ver o jogo depois da aula",
-    cnpj: "54.519.566/0001-50",
-    endereco: "Rua Maria Cristina 50 - Cubatão/SP",
-    cep: "1234567",
-    telefone: "1332001234",
-    celular: "139912340000",
-    email: "elifas@bardoelifas.com",
-    senha: "123456",
+    nome: "",
+    descricao: "",
+    cnpj: "",
+    endereco: "",
+    cep: "",
+    telefone: "",
+    celular: "",
+    email: "",
+    senha: "",
     fotoPerfil: "",
     fotosEstabelecimento: []
   };
