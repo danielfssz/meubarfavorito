@@ -38,7 +38,7 @@ export default class PerfilPicture extends Component<NavigationInjectedProps> {
       });
 
       const newInfoRegister = Object.assign({}, this.state.infoRegister);
-      newInfoRegister.fotoPerfil = res.data;
+      newInfoRegister.fotoPerfil = `data:${res.mime};base64,${res.data}`;
 
       this.setState({
         infoRegister: newInfoRegister

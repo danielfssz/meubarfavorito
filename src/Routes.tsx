@@ -13,6 +13,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import Main from "./screens/main/Main";
 import MatchDetail from "./screens/main/MatchDetail";
+import EventDetail from "./screens/main/EventDetail";
 
 import SignIn from "./screens/authentication/SignIn";
 import SignOut from "./screens/authentication/SignOut";
@@ -83,7 +84,8 @@ const menuDrawer = (props: any) => (
 const mainNavigation = createStackNavigator(
   {
     Main,
-    MatchDetail
+    MatchDetail,
+    EventDetail
   },
   {
     navigationOptions: {
