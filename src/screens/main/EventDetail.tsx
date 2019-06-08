@@ -67,15 +67,48 @@ export default class EventDetail extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.divContent}>
-          <View style={styles.divCarrousel}>
+          <View style={styles.divEventPromo}>
             {this.state.event ? (
-              <Carousel
-                layout={"default"}
-                renderItem={this._renderItem}
-                sliderWidth={sliderWidth}
-                itemWidth={itemWidth}
-                data={this.state.event.fotosEstabelecimento}
-              />
+              <View style={{ flex: 1, alignItems: "flex-start" }}>
+                <View style={styles.infoArea}>
+                  <View style={styles.divImagePub}>
+                    <Image
+                      resizeMode={"contain"}
+                      style={styles.imagePub}
+                      source={{ uri: this.state.event.fotoPerfil }}
+                    />
+                  </View>
+                  <View style={styles.infoMatch}>
+                    <View
+                      style={{ flexDirection: "row", alignItems: "stretch" }}
+                    >
+                      <View style={styles.divImagesTeams}>
+                        <Image
+                          style={styles.imageTeam}
+                          source={{
+                            uri: this.state.event.escudoMandante
+                          }}
+                        />
+                        <Image
+                          style={styles.imageVersus}
+                          source={require("../../assets/x.png")}
+                        />
+                        <Image
+                          style={styles.imageTeam}
+                          source={{
+                            uri: this.state.event.escudoVisitante
+                          }}
+                        />
+                      </View>
+                    </View>
+                    <View style={styles.divInfoMatchArea}>
+                      <Text style={styles.textHourMatch}>
+                        {moment(this.state.event.data).format("LLLL")}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+              </View>
             ) : (
               <View
                 style={[
@@ -120,15 +153,15 @@ export default class EventDetail extends Component {
             )}
           </View>
         </View>
-
-        <View style={styles.divEventPromo}>
+        <View style={styles.divCarrousel}>
           {this.state.event ? (
-            <View style={{ alignItems: "flex-start", paddingLeft: 20 }}>
-              <Text style={styles.textTitlePromo}>Promoções:</Text>
-              <Text style={styles.textPromo}>
-                {this.state.event.descricaoPromocao}
-              </Text>
-            </View>
+            <Carousel
+              layout={"default"}
+              renderItem={this._renderItem}
+              sliderWidth={sliderWidth}
+              itemWidth={itemWidth}
+              data={this.state.event.fotosEstabelecimento}
+            />
           ) : (
             <View
               style={[
@@ -147,16 +180,16 @@ export default class EventDetail extends Component {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#fff" },
-  divContent: { flex: 12 },
+  divContent: { flex: 10 },
   divCarrousel: {
-    flex: 4, // Somar
+    flex: 6, // Somar
     // backgroundColor: "#38C08E",
     margin: 5,
+    marginBottom: 15,
     borderRadius: 3
   },
   divEventDetail: {
-    flex: 2, // Somar
-    margin: 5,
+    flex: 1.5, // Somar
     borderRadius: 3,
     paddingTop: 15
   },
@@ -172,7 +205,7 @@ const styles = StyleSheet.create({
     marginTop: 5
   },
   divEventPromo: {
-    flex: 6, // Somar
+    flex: 2, // Somar
     margin: 5,
     borderRadius: 3
   },
@@ -204,5 +237,71 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#939393",
     marginTop: 7.5
-  }
+  },
+  infoArea: {
+    flex: 2,
+    flexDirection: "row",
+    borderWidth: 0.5,
+    borderRadius: 3,
+    borderColor: "transparent",
+    margin: 12
+  },
+  divImagePub: {
+    flex: 1,
+    borderColor: "transparent"
+  },
+  divContentArea: {
+    flex: 1,
+    flexDirection: "column"
+  },
+  imagePub: {
+    width: 130,
+    height: 130
+  },
+  divInformation: {
+    margin: 15
+  },
+  textPubName: {
+    fontSize: 18,
+    color: "#FFF",
+    fontWeight: "bold"
+  },
+  textPubAddress: {
+    fontSize: 17,
+    color: "#FFF"
+  },
+  infoMatch: {
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "center",
+    marginTop: 5
+  },
+  divImagesTeams: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 15,
+    marginRight: 25,
+    marginLeft: 25
+  },
+  imageTeam: {
+    width: 40,
+    height: 40
+  },
+  imageVersus: {
+    width: 20,
+    height: 20
+  },
+  divInfoMatchArea: {
+    flex: 1,
+    alignItems: "center",
+    marginTop: 7
+  },
+  textHourMatch: {
+    textAlign: "center",
+    fontWeight: 'bold',
+    color: "#000",
+    fontSize: 15
+  }  
 });
