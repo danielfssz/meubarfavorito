@@ -47,10 +47,7 @@ const menuDrawer = (props: any) => (
         }}
       >
         <Image
-          source={{
-            uri:
-              "https://upload.wikimedia.org/wikipedia/commons/a/ab/Logo_TV_2015.png"
-          }}
+          source={require("./assets/logo.png")}
           resizeMode={"contain"}
           style={{
             flex: 1,
