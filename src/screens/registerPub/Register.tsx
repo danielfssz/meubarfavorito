@@ -153,7 +153,7 @@ export default class Register extends Component<any, {}> {
                     value={this.state.cnpj}
                     returnKeyType="next"
                     blurOnSubmit={false}
-                    keyboardType={"numeric"}
+                    keyboardType={"numbers-and-punctuation"}
                   />
                 </View>
 
@@ -197,7 +197,7 @@ export default class Register extends Component<any, {}> {
                     placeholder="CEP"
                     placeholderTextColor="#413E4F"
                     autoCapitalize="sentences"
-                    value={this.state.nome}
+                    value={this.state.cep}
                     returnKeyType="next"
                     blurOnSubmit={false}
                     keyboardType={"numeric"}
