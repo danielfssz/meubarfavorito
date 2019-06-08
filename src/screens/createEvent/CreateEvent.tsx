@@ -117,7 +117,7 @@ export default class SelectHourEvent extends Component<
           headers: { token }
         }
       )
-      .then(res => {        
+      .then(res => {
         if (res.data.code === 200) {
           Alert.alert(
             "Cadastro de evento",
@@ -127,6 +127,15 @@ export default class SelectHourEvent extends Component<
                 text: "OK",
                 onPress: () => {
                   this.props.navigation.navigate("mainNavigation");
+                  this.setState({
+                    matchSelected: null,
+                    startDate: moment(),
+                    endDate: moment(),
+                    isDateTimePickerVisibleStart: false,
+                    isDateTimePickerVisibleEnd: false,
+                    loaded: false,
+                    error: null
+                  });
                 }
               }
             ],
@@ -140,7 +149,15 @@ export default class SelectHourEvent extends Component<
               {
                 text: "OK",
                 onPress: () => {
-                  this.setState({ loaded: false });
+                  this.setState({
+                    matchSelected: null,
+                    startDate: moment(),
+                    endDate: moment(),
+                    isDateTimePickerVisibleStart: false,
+                    isDateTimePickerVisibleEnd: false,
+                    loaded: false,
+                    error: null
+                  });
                 }
               }
             ],
