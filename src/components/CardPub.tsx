@@ -5,7 +5,7 @@ const CardMatch = (props: any) => {
   return (
     <View style={styles.container}>
       <View style={styles.divImagePub}>
-        <Image style={styles.imagePub} source={{ uri: props.fotoPerfil }} />
+        <Image resizeMode={"contain"} style={styles.imagePub} source={{ uri: props.fotoPerfil }} />
       </View>
       <View style={styles.divContent}>
         <View style={styles.divInformation}>
@@ -34,17 +34,16 @@ const styles = StyleSheet.create({
   divImagePub: {
     margin: 9,
     borderColor: "transparent",
-    borderWidth: 0.5,
-    borderRadius: 50
+    borderWidth: 0.5
   },
   divContent: {
     flex: 1,
     flexDirection: "column"
   },
   imagePub: {
-    width: 80,
-    height: 80,
-    borderRadius: 50
+    width: 100,
+    height: 100,
+    borderRadius: 20
   },
   divInformation: {
     margin: 15
